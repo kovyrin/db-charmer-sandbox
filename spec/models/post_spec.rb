@@ -1,13 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe FooWarehouse do
+describe Post do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name"
+      :title => "value for title",
+      :body => "value for body"
     }
   end
 
   it "should create a new instance given valid attributes" do
-    FooWarehouse.create!(@valid_attributes)
+    Post.create!(@valid_attributes)
   end
 end
