@@ -28,6 +28,17 @@ test:
   <<: *common
   database: db_charmer_sandbox_test
 
+  # logs database
+  logs:
+    <<: *common
+    database: db_charmer_logs_test
+
+  # logs database
+  slave01:
+    <<: *common
+    username: db_charmer_ro
+    database: db_charmer_sandbox_test
+
 #----------------------------------------------------------------
 production:
   <<: *common
