@@ -16,6 +16,18 @@ describe DbCharmer::ConnectionProxy do
     Foo.stub!(:retrieve_connection).and_return(@conn)
     @proxy.should be(@conn)
   end
+
+  it "should proxy methods with a block parameter" do
+    module MockConnection
+      def self.foo
+        raise "No block given!" unless block_given?
+        yield
+      end
+    end
+    Foo.stub!(:retrieve_connection).and_return(MockConnection)
+    res = @proxy.foo { :foo }
+    res.should == :foo
+  end
   
   it "should proxy all calls to the underlying class connections" do
     Foo.stub!(:retrieve_connection).and_return(@conn)
