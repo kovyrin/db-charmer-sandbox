@@ -33,6 +33,19 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.db_charmer_connection_proxy.should be(proxy)
     end
   end
+
+  describe "in db_charmer_slaves methods" do
+    it "should return [] if no slaves set for a model" do
+      FooModel.db_charmer_slaves = nil
+      FooModel.db_charmer_slaves.should == []
+    end
+    
+    it "should implement both accessor methods" do
+      proxy = mock('connection proxy')
+      FooModel.db_charmer_slaves = [ proxy ]
+      FooModel.db_charmer_slaves.should == [ proxy ]
+    end
+  end
   
   describe "in connection method" do
     it "should return AR's original connection if no connection proxy is set" do
