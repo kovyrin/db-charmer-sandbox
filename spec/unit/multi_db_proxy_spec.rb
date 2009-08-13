@@ -61,4 +61,14 @@ describe "ActiveRecord model with db_magic" do
       end
     end
   end
+  
+  describe "in on_master method" do
+    before do
+      Blah.db_magic :slaves => [ :slave01 ]
+    end
+
+    it "should run queries on the master" do
+      Blah.on_master.db_charmer_connection_proxy.should be_nil
+    end
+  end
 end

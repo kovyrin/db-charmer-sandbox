@@ -80,7 +80,6 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.should be_db_charmer_top_level_connection
     end
   end
-
   
   describe "in connection method" do
     it "should return AR's original connection if no connection proxy is set" do
