@@ -21,6 +21,14 @@ describe "ActiveRecord model with db_magic" do
         Blah.on_db(:logs) {}
         Blah.db_charmer_connection_proxy.should be_nil
       end
+
+      it "should manage connection level values" do
+        Blah.db_charmer_connection_level.should == 0
+        Blah.on_db(:logs) do |m|
+          m.db_charmer_connection_level.should == 1
+        end
+        Blah.db_charmer_connection_level.should == 0
+      end
     end
     
     describe "as a chain call" do
