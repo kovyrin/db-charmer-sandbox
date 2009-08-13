@@ -38,6 +38,10 @@ describe DbCharmer::ConnectionFactory do
   end
   
   describe "in connect method" do
+    before do
+      DbCharmer::ConnectionFactory.reset!
+    end
+    
     it "should return a connection proxy" do
       DbCharmer::ConnectionFactory.connect(:logs).should be_kind_of(ActiveRecord::ConnectionAdapters::AbstractAdapter)
     end
