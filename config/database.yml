@@ -2,7 +2,7 @@ common: &common
   adapter: mysql
   encoding: utf8
   reconnect: false
-  pool: 5
+  pool: 1
   username: root
   password:
   socket: /tmp/mysql.sock
