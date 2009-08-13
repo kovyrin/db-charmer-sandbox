@@ -54,5 +54,11 @@ describe "ActiveRecord model with db_magic" do
       Blah.db_magic :slaves => []
       lambda { Blah.on_slave }.should raise_error(ArgumentError)
     end
+    
+    it 'should support block calls' do
+      Blah.on_slave do |m|
+        m.db_charmer_connection_proxy.object_id.should == Blah.coerce_to_connection_proxy(:slave01).object_id
+      end
+    end
   end
 end
