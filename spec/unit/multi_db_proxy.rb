@@ -36,4 +36,23 @@ describe "ActiveRecord model with db_magic" do
       end
     end
   end
+  
+  describe "in on_slave method" do
+    before do
+      Blah.db_magic :slaves => [ :slave01 ]
+    end
+    
+    it "should use one tof the model's slaves if no slave given" do
+      Blah.on_slave.db_charmer_connection_proxy.object_id.should == Blah.coerce_to_connection_proxy(:slave01).object_id
+    end
+    
+    it "should use given slave" do
+      Blah.on_slave(:logs).db_charmer_connection_proxy.object_id.should == Blah.coerce_to_connection_proxy(:logs).object_id
+    end
+    
+    it "should raise an error if no slaves could be found" do
+      Blah.db_magic :slaves => []
+      lambda { Blah.on_slave }.should raise_error(ArgumentError)
+    end
+  end
 end
