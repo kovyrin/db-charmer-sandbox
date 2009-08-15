@@ -56,4 +56,21 @@ describe "ActiveRecord slave-enabled models" do
       end
     end
   end
+  
+  describe "in data manipulation methods" do
+    it "should go to the master by default" do
+      User.on_master.connection.should_receive(:delete)
+      User.delete_all
+    end
+    
+    it "should go to the master even in slave-enabling chain calls" do
+      User.on_master.connection.should_receive(:delete)
+      User.on_slave.delete_all
+    end
+    
+    it "should go to the master even in slave-enabling block calls" do
+      User.on_master.connection.should_receive(:delete)
+      User.on_slave { |u| u.delete_all }
+    end
+  end
 end
