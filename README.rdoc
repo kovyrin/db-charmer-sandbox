@@ -1,0 +1,1 @@
+This is a sandbox/testing project for the DbCharmer plugin: http://github.com/kovyrin/db-charmer
