@@ -57,12 +57,7 @@ describe "ActiveRecord model with db_magic" do
     it "should use given slave" do
       Blah.on_slave(:logs).db_charmer_connection_proxy.object_id.should == Blah.coerce_to_connection_proxy(:logs).object_id
     end
-    
-    it "should raise an error if no slaves could be found" do
-      Blah.db_magic :slaves => []
-      lambda { Blah.on_slave }.should raise_error(ArgumentError)
-    end
-    
+        
     it 'should support block calls' do
       Blah.on_slave do |m|
         m.db_charmer_connection_proxy.object_id.should == Blah.coerce_to_connection_proxy(:slave01).object_id
