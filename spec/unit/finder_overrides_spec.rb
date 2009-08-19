@@ -73,4 +73,18 @@ describe "ActiveRecord slave-enabled models" do
       User.on_slave { |u| u.delete_all }
     end
   end
+  
+  describe "in instance method" do
+    describe "reload" do
+      it "should always be done on the master" do
+        User.delete_all
+        u = User.create
+
+        User.on_master.connection.should_receive(:select_all).and_return([{}])
+        User.on_slave.connection.should_not_receive(:select_all)
+        
+        User.on_slave { u.reload }
+      end
+    end
+  end
 end
