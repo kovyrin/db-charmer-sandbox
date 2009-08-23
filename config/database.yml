@@ -43,3 +43,14 @@ test:
 production:
   <<: *common
   database: db_charmer_sandbox_production
+
+  # logs database
+  logs:
+    <<: *common
+    database: db_charmer_logs_production
+
+  # logs database
+  slave01:
+    <<: *common
+    username: db_charmer_ro
+    database: db_charmer_sandbox_production
