@@ -34,6 +34,18 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
+  describe "in db_charmer_opts methods" do
+    before do
+      FooModel.db_charmer_opts = nil
+    end
+    
+    it "should implement both accessor methods" do
+      opts = { :foo => :bar}
+      FooModel.db_charmer_opts = opts
+      FooModel.db_charmer_opts.should be(opts)
+    end
+  end
+
   describe "in db_charmer_slaves methods" do
     it "should return [] if no slaves set for a model" do
       FooModel.db_charmer_slaves = nil

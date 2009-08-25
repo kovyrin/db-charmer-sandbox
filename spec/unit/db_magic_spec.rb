@@ -36,5 +36,14 @@ describe "In ActiveRecord models" do
         Blah.db_charmer_slaves.size.should == 2
       end
     end
+    
+    it "should set up a hook to propagate db_magic params to all the children models" do
+      class ParentFoo < ActiveRecord::Base
+        db_magic :foo => :bar
+      end
+      class ChildFoo < ParentFoo; end
+      
+      ChildFoo.db_charmer_opts.should == ParentFoo.db_charmer_opts
+    end
   end
 end
