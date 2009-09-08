@@ -7,3 +7,8 @@ one:
 two:
   title: MyString
   body: MyText
+
+windoze:
+  title: Windows Sucks
+  body: Yeah, it does!
+  user: bill

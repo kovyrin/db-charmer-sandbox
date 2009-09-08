@@ -7,3 +7,7 @@ one:
 two:
   login: MyString
   password: MyString
+
+bill:
+  login: bill
+  password: windoze
