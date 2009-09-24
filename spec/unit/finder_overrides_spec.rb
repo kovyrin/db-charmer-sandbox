@@ -28,6 +28,12 @@ describe "ActiveRecord slave-enabled models" do
             User.send(meth)
           end
         end
+
+        it "should not change connection if called in a transaction" do
+          User.on_master.connection.should_receive(:select_all).and_return([])
+          User.on_slave.connection.should_not_receive(:select_all)
+          User.transaction { User.send(meth) }
+        end
       end
     end
   end
@@ -52,6 +58,12 @@ describe "ActiveRecord slave-enabled models" do
             User.should_not_receive(:on_db)
             User.send(meth, :id).should == 1
           end
+        end
+
+        it "should not change connection if called in a transaction" do
+          User.on_master.connection.should_receive(:select_value).and_return(1)
+          User.on_slave.connection.should_not_receive(:select_value)
+          User.transaction { User.send(meth, :id).should == 1 }
         end
       end
     end
