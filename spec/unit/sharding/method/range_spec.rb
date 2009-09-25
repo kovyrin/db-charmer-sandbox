@@ -16,7 +16,7 @@ describe DbCharmer::Sharding::Method::Range do
       @sharder.should respond_to(:shard_for_key)
     end
   
-    it "should return a shard name to be used for an id" do
+    it "should return a shard name to be used for an key" do
       @sharder.shard_for_key(1).should be_kind_of(Symbol)
     end
   end
