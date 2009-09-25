@@ -28,7 +28,7 @@ describe DbCharmer::Sharding::Method::Range do
       end
     end
 
-    [ 100, 101, 150, 199].each do |id|
+    [ 100, 101, 150, 199, 200].each do |id|
       it "for #{id}" do
         @sharder.shard_for_key(id).should == :shard2
       end
@@ -36,7 +36,7 @@ describe DbCharmer::Sharding::Method::Range do
   end
   
   describe "should correctly return shard for all ids outside the ranges if has a default" do
-    [ 200, 201, 500].each do |id|
+    [ 201, 500].each do |id|
       it "for #{id}" do
         @sharder.shard_for_key(id).should == :shard3
       end
