@@ -1,4 +1,4 @@
-class ShardedModel < ActiveRecord::Base
+class RangeShardedModel < ActiveRecord::Base
   SHARDING_RANGES = {
     0...100   => :shard1,
     100..200  => :shard2,
