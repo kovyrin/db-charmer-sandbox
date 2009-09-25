@@ -44,8 +44,7 @@ describe DbCharmer::Sharding::Method::Range do
   end
   
   it "should raise an exception when there is no default shard and no ranges matched" do
-    default_shard = @sharder.ranges.delete(:default)
+    @sharder.ranges.delete(:default)
     lambda { @sharder.shard_for_key(500) }.should raise_error(ArgumentError)
-    @sharder.ranges[:default] = default_shard      
   end
 end
