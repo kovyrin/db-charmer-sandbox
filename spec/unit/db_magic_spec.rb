@@ -46,5 +46,16 @@ describe "In ActiveRecord models" do
       
       ChildFoo.db_charmer_opts.should == ParentFoo.db_charmer_opts
     end
+    
+    describe "with :sharded parameter" do
+      class ShardTestingFoo < ActiveRecord::Base
+        db_magic :sharded => { :key => :id, :sharded_connection => :texts }
+      end
+
+      it "should add shard_for method to the model" do        
+        ShardTestingFoo.should respond_to(:shard_for)
+      end
+
+    end
   end
 end
