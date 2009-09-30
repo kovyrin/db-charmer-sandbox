@@ -100,11 +100,12 @@ describe DbCharmer, "for ActiveRecord models" do
     end
 
     it "should not return connection proxy value if the proxy is set until connection is hijacked" do
+      class FooModel2 < ActiveRecord::Base; end
       proxy = mock('connection proxy')
-      FooModel.db_charmer_connection_proxy = proxy
-      FooModel.connection.should_not be(proxy)
-      FooModel.hijack_connection!
-      FooModel.connection.should be(proxy)
+      FooModel2.db_charmer_connection_proxy = proxy
+      FooModel2.connection.should_not be(proxy)
+      FooModel2.hijack_connection!
+      FooModel2.connection.should be(proxy)
     end
   end
 end
