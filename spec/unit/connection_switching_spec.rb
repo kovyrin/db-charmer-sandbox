@@ -35,5 +35,11 @@ describe DbCharmer, "AR connection switching" do
       BarModel.switch_connection_to(FooModel)
       BarModel.connection.object_id.should == DbCharmer::ConnectionFactory.connect('logs').object_id
     end
+
+    it "should support connection switching for AR::Base" do
+      ActiveRecord::Base.switch_connection_to(:logs)
+      ActiveRecord::Base.connection.object_id == DbCharmer::ConnectionFactory.connect('logs').object_id
+      ActiveRecord::Base.switch_connection_to(nil)
+    end
   end
 end
