@@ -95,6 +95,7 @@ describe DbCharmer, "for ActiveRecord models" do
   
   describe "in connection method" do
     it "should return AR's original connection if no connection proxy is set" do
+      FooModel.db_charmer_connection_proxy = nil
       FooModel.connection.should be_kind_of(ActiveRecord::ConnectionAdapters::AbstractAdapter)
     end
 
