@@ -1,6 +1,6 @@
 namespace :cruise do
   task :init do
-    sh "./script/install git://github.com/kovyrin/db-charmer.git"
+    sh "./script/plugin install git://github.com/kovyrin/db-charmer.git"
     ENV['RAILS_ENV'] = RAILS_ENV = 'test'
   end
 
