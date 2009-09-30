@@ -5,7 +5,6 @@ common: &common
   pool: 1
   username: root
   password:
-  socket: /tmp/mysql.sock
 
 #----------------------------------------------------------------
 development:
