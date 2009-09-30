@@ -24,6 +24,7 @@ describe "In ActiveRecord models" do
     
     describe "with :slave or :slaves parameter" do
       it "should merge :slave and :slaves values" do
+        Blah.db_charmer_slaves = []
         Blah.db_charmer_slaves.should be_empty
         
         Blah.db_magic :slave => :slave01
