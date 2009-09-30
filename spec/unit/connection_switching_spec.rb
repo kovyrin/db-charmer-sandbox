@@ -9,7 +9,7 @@ describe DbCharmer, "AR connection switching" do
       BarModel.hijack_connection!      
       @proxy = mock('proxy')
     end
-    
+
     before do
       BarModel.db_charmer_connection_proxy = @proxy
       BarModel.connection.should be(@proxy)
