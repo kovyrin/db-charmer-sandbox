@@ -1,5 +1,3 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
 one:
   title: MyString
   body: MyText
@@ -11,4 +9,9 @@ two:
 windoze:
   title: Windows Sucks
   body: Yeah, it does!
+  user: bill
+
+foo:
+  title: Foo
+  body: Foo body
   user: bill
