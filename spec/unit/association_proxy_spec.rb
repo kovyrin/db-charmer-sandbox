@@ -4,7 +4,7 @@ describe "DbCharmer::AssociationProxy extending AR::Associations" do
   fixtures :users, :posts
 
   it "should add proxy? => true method" do
-    users(:bill).posts.should be_proxy
+    users(:bill).posts.proxy?.should be_true
   end
 
   describe "in has_many associations" do
