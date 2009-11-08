@@ -36,6 +36,10 @@ describe "ActiveRecord slave-enabled models" do
         end
       end
     end
+    it "should go to master if called find with :lock => true option" do
+      User.on_master.connection.should_receive(:select_all).and_return([])
+      User.find :first, :lock => true
+    end
   end
   
   describe "in calculation method" do
