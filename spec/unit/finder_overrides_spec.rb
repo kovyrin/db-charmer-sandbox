@@ -48,6 +48,15 @@ describe "ActiveRecord slave-enabled models" do
       User.on_slave.connection.should_receive(:select_all).and_return([])
       User.find(:first)
     end
+
+    it "should correctly pass all find params to the underlying code" do
+      u1 = User.create(:login => 'foo')
+      u2 = User.create(:login => 'bar')
+
+      User.find(:all, :conditions => { :login => 'foo' }).should == [ u1 ]
+      User.find(:all, :limit => 1).size.should == 1
+      User.find(:first, :conditions => { :login => 'bar' }).should == u2
+    end
   end
 
   describe "in calculation method" do
