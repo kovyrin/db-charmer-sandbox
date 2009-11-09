@@ -50,6 +50,7 @@ describe "ActiveRecord slave-enabled models" do
     end
 
     it "should correctly pass all find params to the underlying code" do
+      User.delete_all
       u1 = User.create(:login => 'foo')
       u2 = User.create(:login => 'bar')
 
