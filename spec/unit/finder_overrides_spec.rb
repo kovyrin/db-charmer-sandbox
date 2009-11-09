@@ -14,7 +14,7 @@ describe "ActiveRecord slave-enabled models" do
           User.on_slave.connection.should_receive(:select_all).and_return([])
           User.send(meth)
         end
-    
+
         it "should not change connection if called in an on_db block" do
           User.on_db(:logs).connection.should_receive(:select_all).and_return([])
           User.on_slave.connection.should_not_receive(:select_all)
@@ -36,12 +36,20 @@ describe "ActiveRecord slave-enabled models" do
         end
       end
     end
-    it "should go to master if called find with :lock => true option" do
+
+    it "should go to the master if called find with :lock => true option" do
       User.on_master.connection.should_receive(:select_all).and_return([])
-      User.find :first, :lock => true
+      User.on_slave.connection.should_not_receive(:select_all)
+      User.find(:first, :lock => true)
+    end
+
+    it "should not go to the master if no :lock => true option passed" do
+      User.on_master.connection.should_not_receive(:select_all)
+      User.on_slave.connection.should_receive(:select_all).and_return([])
+      User.find(:first)
     end
   end
-  
+
   describe "in calculation method" do
     [ :count, :minimum, :maximum, :average ].each do |meth|
       describe meth do
@@ -49,7 +57,7 @@ describe "ActiveRecord slave-enabled models" do
           User.on_slave.connection.should_receive(:select_value).and_return(1)
           User.send(meth, :id).should == 1
         end
-  
+
         it "should not change connection if called in an on_db block" do
           User.on_db(:logs).connection.should_receive(:select_value).and_return(1)
           User.on_slave.connection.should_not_receive(:select_value)
