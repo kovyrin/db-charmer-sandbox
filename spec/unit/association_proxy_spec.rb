@@ -40,6 +40,16 @@ describe "DbCharmer::AssociationProxy extending AR::Associations" do
       Post.switch_connection_to(nil)
       @user.posts.on_db(:slave01).count.should == @user.posts.count
     end
+
+    it "should work with named scopes" do
+      Post.switch_connection_to(nil)
+      @user.posts.windows_posts.on_db(:slave01).count.should == @user.posts.windows_posts.count
+    end
+
+    it "should work with chained named scopes" do
+      Post.switch_connection_to(nil)
+      @user.posts.windows_posts.dummy_scope.on_db(:slave01).count.should == @user.posts.windows_posts.dummy_scope.count
+    end
   end
 
   describe "in belongs_to associations" do
