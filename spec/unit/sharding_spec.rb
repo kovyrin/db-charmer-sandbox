@@ -15,3 +15,4 @@ describe "DbCharmer::Sharding" do
     end
   end
 end
+

@@ -4,3 +4,4 @@ class RangeShardedModel < ActiveRecord::Base
     :sharded_connection => :texts
   }
 end
+

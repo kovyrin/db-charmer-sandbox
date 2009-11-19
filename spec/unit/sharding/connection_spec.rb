@@ -14,9 +14,10 @@ describe DbCharmer::Sharding::Connection do
       lambda { DbCharmer::Sharding::Connection.new(:name => :foo, :method => :foo) }.should raise_error(NameError)
     end
 
-    it "should instantiate sharder class according to the :method value" do
+    it "should instantiate a sharder class according to the :method value" do
       DbCharmer::Sharding::Method::Range.should_receive(:new)
-      DbCharmer::Sharding::Connection.new(:name => :foo, :method => :range, :ranges => {})      
+      DbCharmer::Sharding::Connection.new(:name => :foo, :method => :range, :ranges => {})
     end
   end
 end
+
