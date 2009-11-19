@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe RangeShardedModel, "class" do
-  describe "method shard_for" do      
+  describe "method shard_for" do
     describe "should correctly set shards in range-defined shards" do
       [ 0, 1, 50, 99].each do |id|
         it "for #{id}" do
@@ -36,7 +36,7 @@ describe RangeShardedModel, "class" do
         default_shard = RangeShardedModel.sharded_connection.sharder.ranges.delete(:default)
         lambda { RangeShardedModel.shard_for(500) }.should raise_error(ArgumentError)
       ensure
-        RangeShardedModel.sharded_connection.sharder.ranges[:default] = default_shard      
+        RangeShardedModel.sharded_connection.sharder.ranges[:default] = default_shard
       end
     end
   end
