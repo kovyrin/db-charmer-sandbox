@@ -19,7 +19,7 @@ describe RangeShardedModel, "class" do
         end
       end
     end
-    
+
     describe "should correctly set shards in default shard" do
       [ 201, 500].each do |id|
         it "for #{id}" do
@@ -30,7 +30,7 @@ describe RangeShardedModel, "class" do
         end
       end
     end
-    
+
     it "should raise an exception when there is no default shard and no ranged shards matched" do
       begin
         default_shard = RangeShardedModel.sharded_connection.sharder.ranges.delete(:default)
@@ -41,3 +41,4 @@ describe RangeShardedModel, "class" do
     end
   end
 end
+
