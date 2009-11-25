@@ -1,7 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec/spec_helper'
 
-describe RangeShardedModel, "class" do
-  describe "method shard_for" do
+describe RangeShardedModel do
+  describe "class method shard_for" do
     describe "should correctly set shards in range-defined shards" do
       [ 0, 1, 50, 99].each do |id|
         it "for #{id}" do
