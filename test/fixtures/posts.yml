@@ -1,0 +1,17 @@
+one:
+  title: MyString
+  body: MyText
+
+two:
+  title: MyString
+  body: MyText
+
+windoze:
+  title: Windows Sucks
+  body: Yeah, it does!
+  user: bill
+
+foo:
+  title: Foo
+  body: Foo body
+  user: bill
