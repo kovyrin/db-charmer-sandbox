@@ -2,3 +2,5 @@
 /db/schema.*
 /.idea
 /TAGS
+.DS_Store
+*~
