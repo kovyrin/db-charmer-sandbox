@@ -35,4 +35,11 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def assert_true(val)
+    assert_same(val, true)
+  end
+
+  def assert_false(val)
+    assert_same(val, false)
+  end
 end
