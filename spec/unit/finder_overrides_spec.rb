@@ -5,6 +5,10 @@ describe "ActiveRecord slave-enabled models" do
     class User < ActiveRecord::Base
       db_magic :slave => :slave01
     end
+    
+    class User < ActiveRecord::Base
+      db_magic :slave => :slave01
+    end
   end
 
   describe "in finder method" do
