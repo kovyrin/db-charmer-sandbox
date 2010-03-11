@@ -21,8 +21,8 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.establish_real_connection_if_exists(:logs)
     end
 
-    it "should establish connection even when connection configuration does not exist" do
-      FooModel.should_receive(:establish_connection)
+    it "should not establish connection even when connection configuration does not exist" do
+      FooModel.should_not_receive(:establish_connection)
       FooModel.establish_real_connection_if_exists(:blah)
     end
   end

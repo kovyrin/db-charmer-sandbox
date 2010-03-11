@@ -6,9 +6,8 @@ describe 'AbstractAdapter' do
   end
 
   it "should have connection_name read accessor working" do
-    DbCharmer::ConnectionFactory.generate_abstract_class('blah').connection.connection_name.should == 'blah'
-    DbCharmer::ConnectionFactory.generate_abstract_class('foo').connection.connection_name.should == 'foo'
-    DbCharmer::ConnectionFactory.generate_abstract_class('abrakadabra').connection.connection_name.should == 'abrakadabra'
+    DbCharmer::ConnectionFactory.generate_abstract_class('logs').connection.connection_name.should == 'logs'
+    DbCharmer::ConnectionFactory.generate_abstract_class('slave01').connection.connection_name.should == 'slave01'
     ActiveRecord::Base.connection.connection_name.should be_nil
   end
 
