@@ -4,7 +4,7 @@ describe DbCharmer::ConnectionProxy do
   before(:each) do
     class Foo; end
     @conn = mock('connection')
-    @proxy = DbCharmer::ConnectionProxy.new(Foo)
+    @proxy = DbCharmer::ConnectionProxy.new(Foo, :foo)
   end
   
   it "should retrieve connection from an underlying class" do

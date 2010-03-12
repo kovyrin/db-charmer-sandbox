@@ -88,9 +88,9 @@ describe "DbCharmer#with_remapped_databases" do
     if klass.respond_to?(:connection_with_magic)
       klass.class_eval <<-END
         class << self
-          remove_method(:connection_with_magic)
+          undef_method(:connection_with_magic)
           alias_method(:connection, :connection_without_magic)
-          remove_method(:connection_without_magic)
+          undef_method(:connection_without_magic)
         end
       END
     end

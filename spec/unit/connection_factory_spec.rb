@@ -32,7 +32,7 @@ describe DbCharmer::ConnectionFactory do
     it "should create and return a connection proxy for the abstract class" do
       klass = mock('AbstractClass')
       DbCharmer::ConnectionFactory.should_receive(:generate_abstract_class).and_return(klass)
-      DbCharmer::ConnectionProxy.should_receive(:new).with(klass)
+      DbCharmer::ConnectionProxy.should_receive(:new).with(klass, :foo)
       DbCharmer::ConnectionFactory.establish_connection(:foo)
     end
   end

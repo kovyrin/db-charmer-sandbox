@@ -7,7 +7,11 @@ describe DbCharmer, "AR connection switching" do
   describe "in switch_connection_to method" do
     before(:all) do
       BarModel.hijack_connection!      
+    end
+    
+    before :each do
       @proxy = mock('proxy')
+      @proxy.stub!(:db_charmer_connection_name).and_return(:myproxy)
     end
 
     before do
