@@ -36,6 +36,18 @@ class SpecMultiDbMigration3 < ActiveRecord::Migration
   end
 end
 
+class SpecMultiDbMigration4 < ActiveRecord::Migration
+  db_magic :connections => [:logs, :default]
+
+  def self.up
+    execute "UPDATE log_records SET level = 'hoho'"
+  end
+
+  def self.down
+    execute "UPDATE log_records SET level = 'blah'"
+  end
+end
+
 describe "Multi-db migractions" do
   describe "with db_magic calls" do
     it "should send all up requests to specified connection" do
@@ -76,6 +88,20 @@ describe "Multi-db migractions" do
       ActiveRecord::Base.connection.should_receive(:execute).with("UPDATE log_records SET level = 'blah'")
       DbCharmer::ConnectionFactory.connect(:logs).should_receive(:execute).with("UPDATE log_records SET level = 'blah'")
       SpecMultiDbMigration3.migrate(:down)
+    end
+  end
+
+  describe "with db_magic calls" do
+    it "should send all up requests to specified connection" do
+      ActiveRecord::Base.connection.should_receive(:execute).with("UPDATE log_records SET level = 'hoho'")
+      DbCharmer::ConnectionFactory.connect(:logs).should_receive(:execute).with("UPDATE log_records SET level = 'hoho'")
+      SpecMultiDbMigration4.migrate(:up)
+    end
+
+    it "should send all down requests to specified connection" do
+      ActiveRecord::Base.connection.should_receive(:execute).with("UPDATE log_records SET level = 'blah'")
+      DbCharmer::ConnectionFactory.connect(:logs).should_receive(:execute).with("UPDATE log_records SET level = 'blah'")
+      SpecMultiDbMigration4.migrate(:down)
     end
   end
 end
