@@ -79,4 +79,28 @@ describe DbCharmer::ConnectionFactory do
       DbCharmer::ConnectionFactory.connect(:foo)
     end
   end
+
+  context "in connect_to_db method" do
+    before do
+      DbCharmer::ConnectionFactory.reset!
+      @conf = {
+        :adapter => 'mysql',
+        :username => "db_charmer_ro",
+        :database => "db_charmer_sandbox_test",
+        :name => 'sanbox_ro'
+      }
+    end
+
+    it "should return a connection proxy" do
+      DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf).should be_kind_of(ActiveRecord::ConnectionAdapters::AbstractAdapter)
+    end
+
+    it "should memoize proxies" do
+      conn = mock('connection')
+      DbCharmer::ConnectionFactory.should_receive(:establish_connection_to_db).with(@conf[:name], @conf).once.and_return(conn)
+      DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf)
+      DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf)
+    end
+  end
+
 end
