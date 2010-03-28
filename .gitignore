@@ -2,3 +2,4 @@
 /db/schema.*
 /.idea
 /TAGS
+/config/database.yml
