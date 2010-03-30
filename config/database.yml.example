@@ -10,7 +10,7 @@ common: &common
 development:
   <<: *common
   database: db_charmer_sandbox_development
-  
+
   # logs database
   logs:
     <<: *common
@@ -37,11 +37,21 @@ test:
     <<: *common
     username: db_charmer_ro
     database: db_charmer_sandbox_test
-  
+
   # shard mapping db
   social_shard_info:
     <<: *common
     database: db_charmer_sandbox_test
+
+  # for migrations only
+  social_shard01:
+    <<: *common
+    database: db_charmer_events_test_shard01
+
+  # for migrations only
+  social_shard02:
+    <<: *common
+    database: db_charmer_events_test_shard02
 
 #----------------------------------------------------------------
 production:

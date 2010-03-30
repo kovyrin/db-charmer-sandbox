@@ -11,6 +11,7 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
       :shards_table => :event_shards_info,
       :connection => :social_shard_info
     )
+    @conn = DbCharmer::ConnectionFactory.connect(:social_shard_info)
   end
 
   describe "standard interface" do
@@ -21,11 +22,14 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
     it "should return a shard config to be used for a key" do
       @sharder.shard_for_key(1).should be_kind_of(Hash)
     end
+
+    it "should have shard_connections method and return a list of db connections" do
+      @sharder.shard_connections.should_not be_empty
+    end
   end
 
   it "should correctly return shards for all blocks defined in the mapping table" do
-    conn = DbCharmer::ConnectionFactory.connect(:social_shard_info)
-    blocks = conn.select_all("SELECT * FROM event_shards_map")
+    blocks = @conn.select_all("SELECT * FROM event_shards_map")
 
     blocks.each do |blk|
       shard = @sharder.shard_for_key(blk['start_id'])
@@ -41,7 +45,6 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
 
   describe "for non-existing blocks" do
     before do
-      @conn = DbCharmer::ConnectionFactory.connect(:social_shard_info)
       @max_id = @conn.select_value("SELECT max(end_id) FROM event_shards_map").to_i
     end
 
@@ -68,5 +71,10 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
       @conn.execute("UPDATE event_shards_info SET enabled = 0 WHERE id = 3")
       @sharder.shard_for_key(@max_id + 1)[:name].should_not match(/shard.*03$/)
     end
+  end
+
+  it "should fail on invalid shard references" do
+     @conn.execute("DELETE FROM event_shards_info")
+     lambda { @sharder.shard_for_key(1) }.should raise_error(ArgumentError)
   end
 end
