@@ -6,7 +6,7 @@ describe DbCharmer::ConnectionProxy do
     @conn = mock('connection')
     @proxy = DbCharmer::ConnectionProxy.new(Foo, :foo)
   end
-  
+
   it "should retrieve connection from an underlying class" do
     Foo.should_receive(:retrieve_connection).and_return(@conn)
     @proxy.inspect
@@ -28,7 +28,7 @@ describe DbCharmer::ConnectionProxy do
     res = @proxy.foo { :foo }
     res.should == :foo
   end
-  
+
   it "should proxy all calls to the underlying class connections" do
     Foo.stub!(:retrieve_connection).and_return(@conn)
     @conn.should_receive(:foo)

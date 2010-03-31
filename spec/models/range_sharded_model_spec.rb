@@ -23,7 +23,6 @@ describe RangeShardedModel do
     describe "should correctly set shards in default shard" do
       [ 201, 500].each do |id|
         it "for #{id}" do
-          pp RangeShardedModel.sharded_connection.sharder.ranges
           RangeShardedModel.shard_for(id) do |m|
             m.connection.object_id.should == RangeShardedModel.on_db(:shard3).connection.object_id
           end
