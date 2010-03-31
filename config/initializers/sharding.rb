@@ -1,4 +1,4 @@
-# Range-based shards fpr testing
+# Range-based shards for testing
 
 TEXTS_SHARDING_RANGES = {
   0...100   => :shard1,
