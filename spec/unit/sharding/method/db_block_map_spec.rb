@@ -77,4 +77,34 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
      @conn.execute("DELETE FROM event_shards_info")
      lambda { @sharder.shard_for_key(1) }.should raise_error(ArgumentError)
   end
+
+  it "should cache shards info" do
+    shard = DbCharmer::Sharding::Method::DbBlockMap::ShardInfo.first
+    DbCharmer::Sharding::Method::DbBlockMap::ShardInfo.should_receive(:find_by_id).once.and_return(shard)
+    @sharder.shard_info_by_id(1)
+    @sharder.shard_info_by_id(1)
+  end
+
+  it "should not cache shards info when explicitly asked not to" do
+    shard = DbCharmer::Sharding::Method::DbBlockMap::ShardInfo.first
+    DbCharmer::Sharding::Method::DbBlockMap::ShardInfo.should_receive(:find_by_id).twice.and_return(shard)
+    @sharder.shard_info_by_id(1, false)
+    @sharder.shard_info_by_id(1, false)
+  end
+
+  it "should cache blocks" do
+    @sharder.block_for_key(1)
+    @sharder.connection.should_not_receive(:select_one)
+    @sharder.block_for_key(1)
+    @sharder.block_for_key(2)
+  end
+
+  it "should not cache blocks if asked not to" do
+    block = @sharder.block_for_key(1)
+    @sharder.connection.should_receive(:select_one).twice.and_return(block)
+    @sharder.block_for_key(1, false)
+    @sharder.block_for_key(2, false)
+  end
+
+
 end
