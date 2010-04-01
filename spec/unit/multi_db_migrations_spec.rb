@@ -49,6 +49,14 @@ class SpecMultiDbMigration4 < ActiveRecord::Migration
 end
 
 describe "Multi-db migractions" do
+  before(:all) do
+    DbCharmer.connections_should_exist = true
+  end
+
+  after(:all) do
+    DbCharmer.connections_should_exist = false
+  end
+
   describe "with db_magic calls" do
     it "should send all up requests to specified connection" do
       ActiveRecord::Base.connection.should_not_receive(:execute)
