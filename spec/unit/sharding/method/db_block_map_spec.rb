@@ -62,14 +62,22 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
       @sharder.shard_for_key(@max_id + 1)[:name].should match(/shard.*03$/)
     end
 
-    it "should not condider non-open shards" do
+    it "should not consider non-open shards" do
       @conn.execute("UPDATE event_shards_info SET open = 0 WHERE id = 3")
       @sharder.shard_for_key(@max_id + 1)[:name].should_not match(/shard.*03$/)
     end
 
-    it "should not condider disabled shards" do
+    it "should not consider disabled shards" do
       @conn.execute("UPDATE event_shards_info SET enabled = 0 WHERE id = 3")
       @sharder.shard_for_key(@max_id + 1)[:name].should_not match(/shard.*03$/)
+    end
+
+    it "should increment the blocks counter on the shard" do
+      lambda {
+        @sharder.shard_for_key(@max_id + 1)
+      }.should change {
+         @conn.select_value("SELECT blocks_count FROM event_shards_info WHERE id = 3").to_i
+      }.by(+1)
     end
   end
 
