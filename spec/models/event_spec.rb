@@ -15,7 +15,7 @@ describe Event, "sharded model" do
     Event.shard_for(2).all.should be_empty
     Event.shard_for(12).all.should be_empty
 
-    # Create some data (one record in each shard
+    # Create some data (one record in each shard)
     Event.shard_for(2).create!(
       :from_uid => 1,
       :to_uid => 2,
@@ -60,5 +60,22 @@ describe Event, "sharded model" do
     lambda { Event.first }.should raise_error(ActiveRecord::ConnectionNotEstablished)
     lambda { Event.create }.should raise_error(ActiveRecord::ConnectionNotEstablished)
     lambda { Event.delete_all }.should raise_error(ActiveRecord::ConnectionNotEstablished)
+  end
+
+  it "should not fail when AR does some internal calls to the database" do
+    # Cleanup sharded tables
+    Event.on_each_shard { |event| event.delete_all }
+
+    # Create an object
+    x = Event.shard_for(100).create!(
+      :from_uid => 1,
+      :to_uid => 100,
+      :original_created_at => Time.now,
+      :event_type => 1,
+      :event_data => 'blah'
+    )
+
+    Event.reset_column_information
+    lambda { x.inspect }.should_not raise_error
   end
 end
