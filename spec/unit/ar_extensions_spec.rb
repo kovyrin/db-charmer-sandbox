@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-class FooModel < ActiveRecord::Base; end    
+class FooModel < ActiveRecord::Base; end
 
 describe DbCharmer, "for ActiveRecord models" do
   describe "in establish_real_connection_if_exists method" do
@@ -15,7 +15,7 @@ describe DbCharmer, "for ActiveRecord models" do
     it "should not check connection name if reqested not to" do
       lambda { FooModel.establish_real_connection_if_exists(:foo, false) }.should_not raise_error
     end
-    
+
     it "should establish connection when connection configuration exists" do
       FooModel.should_receive(:establish_connection)
       FooModel.establish_real_connection_if_exists(:logs)
@@ -26,12 +26,12 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.establish_real_connection_if_exists(:blah)
     end
   end
-  
+
   describe "in db_charmer_connection_proxy methods" do
     before do
       FooModel.db_charmer_connection_proxy = nil
     end
-    
+
     it "should implement both accessor methods" do
       proxy = mock('connection proxy')
       FooModel.db_charmer_connection_proxy = proxy
@@ -39,11 +39,23 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
+  describe "in db_charmer_default_connection methods" do
+    before do
+      FooModel.db_charmer_default_connection = nil
+    end
+
+    it "should implement both accessor methods" do
+      conn = mock('connection')
+      FooModel.db_charmer_default_connection = conn
+      FooModel.db_charmer_default_connection.should be(conn)
+    end
+  end
+
   describe "in db_charmer_opts methods" do
     before do
       FooModel.db_charmer_opts = nil
     end
-    
+
     it "should implement both accessor methods" do
       opts = { :foo => :bar}
       FooModel.db_charmer_opts = opts
@@ -56,13 +68,13 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.db_charmer_slaves = nil
       FooModel.db_charmer_slaves.should == []
     end
-    
+
     it "should implement both accessor methods" do
       proxy = mock('connection proxy')
       FooModel.db_charmer_slaves = [ proxy ]
       FooModel.db_charmer_slaves.should == [ proxy ]
     end
-    
+
     it "should implement random slave selection" do
       FooModel.db_charmer_slaves = [ :proxy1, :proxy2, :proxy3 ]
       srand(0)
@@ -80,7 +92,7 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.db_charmer_connection_level = nil
       FooModel.db_charmer_connection_level.should == 0
     end
-    
+
     it "should implement both accessor methods and support inc/dec operations" do
       FooModel.db_charmer_connection_level = 1
       FooModel.db_charmer_connection_level.should == 1
@@ -89,7 +101,7 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.db_charmer_connection_level -= 1
       FooModel.db_charmer_connection_level.should == 1
     end
-    
+
     it "should implement db_charmer_top_level_connection? method" do
       FooModel.db_charmer_connection_level = 1
       FooModel.should_not be_db_charmer_top_level_connection
@@ -97,7 +109,7 @@ describe DbCharmer, "for ActiveRecord models" do
       FooModel.should be_db_charmer_top_level_connection
     end
   end
-  
+
   describe "in connection method" do
     it "should return AR's original connection if no connection proxy is set" do
       FooModel.db_charmer_connection_proxy = nil
