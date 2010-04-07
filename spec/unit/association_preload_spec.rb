@@ -29,4 +29,9 @@ describe "ActiveRecord in finder methods" do
     User.should_not_receive(:on_db)
     Post.all(:include => :user)
   end
+
+  it "should not switch connection when association model and main model are on different servers" do
+    LogRecord.should_not_receive(:on_db)
+    User.on_db(:slave01).all(:include => :log_records)
+  end
 end
