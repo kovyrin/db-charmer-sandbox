@@ -1,3 +1,6 @@
+# We only have test environment here
+ENV['RAILS_ENV'] = 'test'
+
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
