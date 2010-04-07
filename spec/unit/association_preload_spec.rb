@@ -1,5 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+describe "ActiveRecord preload_associations method" do
+  it "should be public" do
+    ActiveRecord::Base.public_methods.member?('preload_associations').should be(true)
+  end
+end
+
 describe "ActiveRecord in finder methods" do
   fixtures :categories, :users, :posts, :categories_posts, :avatars
 
