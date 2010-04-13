@@ -79,6 +79,22 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
          @conn.select_value("SELECT blocks_count FROM event_shards_info WHERE id = 3").to_i
       }.by(+1)
     end
+
+    it "should raise duplicate key error when allocating same block twice" do
+      @sharder.allocate_new_block_for_key(@max_id + 1)
+      lambda {
+        @sharder.allocate_new_block_for_key(@max_id + 1)
+      }.should raise_error(ActiveRecord::StatementInvalid)
+    end
+
+    it "should handle duplicate key errors" do
+      @sharder.shard_for_key(@max_id + 1)
+
+      actual_block = @sharder.block_for_key(@max_id + 1)
+      @sharder.should_receive(:block_for_key).twice.and_return(nil, actual_block)
+
+      @sharder.shard_for_key(@max_id + 1)
+    end
   end
 
   it "should fail on invalid shard references" do
