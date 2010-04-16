@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe DbCharmer::ConnectionFactory do
   context "in generate_abstract_class method" do
-    it "should not fail if requested connection config does not exists" do
-      lambda { DbCharmer::ConnectionFactory.generate_abstract_class('foo') }.should_not raise_error
+    it "should fail if requested connection config does not exists" do
+      lambda { DbCharmer::ConnectionFactory.generate_abstract_class('foo') }.should raise_error(ArgumentError)
     end
 
     it "should not fail if requested connection config does not exists and should_exist = false" do
@@ -15,7 +15,7 @@ describe DbCharmer::ConnectionFactory do
     end
 
     it "should generate abstract connection classes" do
-      klass = DbCharmer::ConnectionFactory.generate_abstract_class('foo')
+      klass = DbCharmer::ConnectionFactory.generate_abstract_class('foo', false)
       klass.superclass.should be(ActiveRecord::Base)
     end
   end
