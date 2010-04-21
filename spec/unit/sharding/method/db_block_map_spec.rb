@@ -46,6 +46,7 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
   describe "for non-existing blocks" do
     before do
       @max_id = @conn.select_value("SELECT max(end_id) FROM event_shards_map").to_i
+      Rails.cache.clear
     end
 
     it "should not fail" do
