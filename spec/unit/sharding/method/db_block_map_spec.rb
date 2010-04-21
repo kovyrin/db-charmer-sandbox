@@ -33,13 +33,13 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
 
     blocks.each do |blk|
       shard = @sharder.shard_for_key(blk['start_id'])
-      shard[:name].should match(/social.*#{blk['shard_id']}$/)
+      shard[:connection_name].should match(/social.*#{blk['shard_id']}$/)
 
       shard = @sharder.shard_for_key(blk['start_id'].to_i + 1)
-      shard[:name].should match(/social.*#{blk['shard_id']}$/)
+      shard[:connection_name].should match(/social.*#{blk['shard_id']}$/)
 
       shard = @sharder.shard_for_key(blk['end_id'].to_i - 1)
-      shard[:name].should match(/social.*#{blk['shard_id']}$/)
+      shard[:connection_name].should match(/social.*#{blk['shard_id']}$/)
     end
   end
 
@@ -59,17 +59,17 @@ describe DbCharmer::Sharding::Method::DbBlockMap do
     end
 
     it "should assign it to the least loaded shard" do
-      @sharder.shard_for_key(@max_id + 1)[:name].should match(/shard.*03$/)
+      @sharder.shard_for_key(@max_id + 1)[:connection_name].should match(/shard.*03$/)
     end
 
     it "should not consider non-open shards" do
       @conn.execute("UPDATE event_shards_info SET open = 0 WHERE id = 3")
-      @sharder.shard_for_key(@max_id + 1)[:name].should_not match(/shard.*03$/)
+      @sharder.shard_for_key(@max_id + 1)[:connection_name].should_not match(/shard.*03$/)
     end
 
     it "should not consider disabled shards" do
       @conn.execute("UPDATE event_shards_info SET enabled = 0 WHERE id = 3")
-      @sharder.shard_for_key(@max_id + 1)[:name].should_not match(/shard.*03$/)
+      @sharder.shard_for_key(@max_id + 1)[:connection_name].should_not match(/shard.*03$/)
     end
 
     it "should increment the blocks counter on the shard" do

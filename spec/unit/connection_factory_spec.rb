@@ -88,20 +88,20 @@ describe DbCharmer::ConnectionFactory do
         :adapter => 'mysql',
         :username => "db_charmer_ro",
         :database => "db_charmer_sandbox_test",
-        :name => 'sanbox_ro'
+        :connection_name => 'sanbox_ro'
       }
     end
 
     it "should return a connection proxy" do
-      DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf).should be_kind_of(ActiveRecord::ConnectionAdapters::AbstractAdapter)
+      DbCharmer::ConnectionFactory.connect_to_db(@conf[:connection_name], @conf).should be_kind_of(ActiveRecord::ConnectionAdapters::AbstractAdapter)
     end
 
 # should_receive is evil on a singletone classes
 #    it "should memoize proxies" do
 #      conn = mock('connection4')
-#      DbCharmer::ConnectionFactory.should_receive(:establish_connection_to_db).with(@conf[:name], @conf).once.and_return(conn)
-#      DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf)
-#      DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf)
+#      DbCharmer::ConnectionFactory.should_receive(:establish_connection_to_db).with(@conf[:connection_name], @conf).once.and_return(conn)
+#      DbCharmer::ConnectionFactory.connect_to_db(@conf[:connection_name], @conf)
+#      DbCharmer::ConnectionFactory.connect_to_db(@conf[:connection_name], @conf)
 #    end
   end
 

@@ -46,18 +46,18 @@ describe DbCharmer, "AR connection switching" do
           :adapter => 'mysql',
           :username => "db_charmer_ro",
           :database => "db_charmer_sandbox_test",
-          :name => 'sanbox_ro'
+          :connection_name => 'sanbox_ro'
         }
       end
 
-      it "should fail if there is no :name parameter" do
-        @conf.delete(:name)
+      it "should fail if there is no :connection_name parameter" do
+        @conf.delete(:connection_name)
         lambda { BarModel.switch_connection_to(@conf) }.should raise_error(ArgumentError)
       end
 
       it "generate an abstract class with connection factory" do
         BarModel.switch_connection_to(@conf)
-        BarModel.connection.object_id.should == DbCharmer::ConnectionFactory.connect_to_db(@conf[:name], @conf).object_id
+        BarModel.connection.object_id.should == DbCharmer::ConnectionFactory.connect_to_db(@conf[:connection_name], @conf).object_id
       end
     end
 
