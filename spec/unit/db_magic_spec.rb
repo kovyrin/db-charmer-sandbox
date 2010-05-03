@@ -13,12 +13,15 @@ describe "In ActiveRecord models" do
       it "should pass :should_exist paramater value to the underlying connection logic" do
         DbCharmer::ConnectionFactory.should_receive(:connect).with(:logs, 'blah')
         Blah.db_magic :connection => :logs, :should_exist => 'blah'
+        DbCharmer.connections_should_exist = true
+        DbCharmer::ConnectionFactory.should_receive(:connect).with(:logs, false)
+        Blah.db_magic :connection => :logs, :should_exist => false
       end
       
       it "should use global DbMagic's connections_should_exist attribute if no :should_exist passed" do
         DbCharmer.connections_should_exist = true
         DbCharmer::ConnectionFactory.should_receive(:connect).with(:logs, true)
-        Blah.db_magic :connection => :logs, :should_exist => false
+        Blah.db_magic :connection => :logs
       end
     end
     
