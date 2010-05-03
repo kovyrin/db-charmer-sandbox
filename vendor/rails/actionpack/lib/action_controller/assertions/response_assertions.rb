@@ -64,7 +64,9 @@ module ActionController
           # Support partial arguments for hash redirections
           if options.is_a?(Hash) && @response.redirected_to.is_a?(Hash)
             if options.all? {|(key, value)| @response.redirected_to[key] == value}
-              ::ActiveSupport::Deprecation.warn("Using assert_redirected_to with partial hash arguments is deprecated. Specify the full set arguments instead", caller)
+              callstack = caller.dup
+              callstack.slice!(0, 2)
+              ::ActiveSupport::Deprecation.warn("Using assert_redirected_to with partial hash arguments is deprecated. Specify the full set arguments instead", callstack)
               return true
             end
           end
@@ -142,16 +144,25 @@ module ActionController
         end
 
         def normalize_argument_to_redirection(fragment)
-          after_routing = @controller.url_for(fragment)
-          if after_routing =~ %r{^\w+://.*}
-            after_routing
-          else
-            # FIXME - this should probably get removed.
-            if after_routing.first != '/'
-              after_routing = '/' + after_routing
+          case fragment
+          when %r{^\w[\w\d+.-]*:.*}
+            fragment
+          when String
+            if fragment =~ %r{^\w[\w\d+.-]*:.*}
+              fragment
+            else
+              if fragment !~ /^\//
+                ActiveSupport::Deprecation.warn "Omitting the leading slash on a path with assert_redirected_to is deprecated. Use '/#{fragment}' instead.", caller(2)
+                fragment = "/#{fragment}"
+              end
+              @request.protocol + @request.host_with_port + fragment
             end
-            @request.protocol + @request.host_with_port + after_routing
-          end
+          when :back
+            raise RedirectBackError unless refer = @request.headers["Referer"]
+            refer
+          else
+            @controller.url_for(fragment)
+          end.gsub(/[\r\n]/, '')
         end
     end
   end

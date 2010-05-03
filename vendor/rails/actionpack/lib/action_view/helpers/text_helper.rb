@@ -29,34 +29,35 @@ module ActionView
           ActiveSupport::Deprecation.warn("The binding argument of #concat is no longer needed.  Please remove it from your views and helpers.", caller)
         end
 
-        output_buffer << string
+        output_buffer.safe_concat(string)
       end
 
       # Truncates a given +text+ after a given <tt>:length</tt> if +text+ is longer than <tt>:length</tt>
-      # (defaults to 30). The last characters will be replaced with the <tt>:omission</tt> (defaults to "...").
+      # (defaults to 30). The last characters will be replaced with the <tt>:omission</tt> (defaults to "...")
+      # for a total length not exceeding <tt>:length</tt>.
       #
       # ==== Examples
       #
       #   truncate("Once upon a time in a world far far away")
-      #   # => Once upon a time in a world f...
+      #   # => Once upon a time in a world...
       #
       #   truncate("Once upon a time in a world far far away", :length => 14)
       #   # => Once upon a...
       #
       #   truncate("And they found that many people were sleeping better.", :length => 25, "(clipped)")
-      #   # => And they found that many (clipped)
+      #   # => And they found t(clipped)
       #
-      #   truncate("And they found that many people were sleeping better.", :omission => "... (continued)", :length => 15)
-      #   # => And they found... (continued)
+      #   truncate("And they found that many people were sleeping better.", :omission => "... (continued)", :length => 25)
+      #   # => And they f... (continued)
       #
       # You can still use <tt>truncate</tt> with the old API that accepts the
       # +length+ as its optional second and the +ellipsis+ as its
       # optional third parameter:
       #   truncate("Once upon a time in a world far far away", 14)
-      #   # => Once upon a time in a world f...
+      #   # => Once upon a...
       #
-      #   truncate("And they found that many people were sleeping better.", 15, "... (continued)")
-      #   # => And they found... (continued)
+      #   truncate("And they found that many people were sleeping better.", 25, "... (continued)")
+      #   # => And they f... (continued)
       def truncate(text, *args)
         options = args.extract_options!
         unless args.empty?
@@ -180,7 +181,7 @@ module ActionView
       #   pluralize(0, 'person')
       #   # => 0 people
       def pluralize(count, singular, plural = nil)
-        "#{count || 0} " + ((count == 1 || count == '1') ? singular : (plural || singular.pluralize))
+        "#{count || 0} " + ((count == 1 || count =~ /^1(\.0+)?$/) ? singular : (plural || singular.pluralize))
       end
 
       # Wraps the +text+ into lines no longer than +line_width+ width. This method
@@ -234,12 +235,20 @@ module ActionView
       #
       #   textilize("Visit the Rails website "here":http://www.rubyonrails.org/.)
       #   # => "<p>Visit the Rails website <a href="http://www.rubyonrails.org/">here</a>.</p>"
-      def textilize(text)
+      #
+      #   textilize("This is worded <strong>strongly</strong>")
+      #   # => "<p>This is worded <strong>strongly</strong></p>"
+      #
+      #   textilize("This is worded <strong>strongly</strong>", :filter_html)
+      #   # => "<p>This is worded &lt;strong&gt;strongly&lt;/strong&gt;</p>"
+      #
+      def textilize(text, *options)
+        options ||= [:hard_breaks]
+
         if text.blank?
           ""
         else
-          textilized = RedCloth.new(text, [ :hard_breaks ])
-          textilized.hard_breaks = true if textilized.respond_to?(:hard_breaks=)
+          textilized = RedCloth.new(text, options)
           textilized.to_html
         end
       end
@@ -314,12 +323,12 @@ module ActionView
       #   # => "<p class='description'>Look ma! A class!</p>"
       def simple_format(text, html_options={})
         start_tag = tag('p', html_options, true)
-        text = text.to_s.dup
+        text = h(text)
         text.gsub!(/\r\n?/, "\n")                    # \r\n and \r -> \n
         text.gsub!(/\n\n+/, "</p>\n\n#{start_tag}")  # 2+ newline  -> paragraph
         text.gsub!(/([^\n]\n)(?=[^\n])/, '\1<br />') # 1 newline   -> br
         text.insert 0, start_tag
-        text << "</p>"
+        text.safe_concat "</p>"
       end
 
       # Turns all URLs and e-mail addresses into clickable links. The <tt>:link</tt> option
@@ -539,7 +548,7 @@ module ActionView
             left, right = $`, $'
             # detect already linked URLs and URLs in the middle of a tag
             if left =~ /<[^>]+$/ && right =~ /^[^>]*>/
-              # do not change string; URL is alreay linked
+              # do not change string; URL is already linked
               href
             else
               # don't include trailing punctuation character as part of the URL
@@ -551,7 +560,7 @@ module ActionView
               end
 
               link_text = block_given?? yield(href) : href
-              href = 'http://' + href unless href.index('http') == 0
+              href = 'http://' + href unless href =~ %r{^[a-z]+://}i
 
               content_tag(:a, h(link_text), link_attributes.merge('href' => href)) + punctuation
             end

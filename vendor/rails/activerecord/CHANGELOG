@@ -1,4 +1,38 @@
-*2.3.3 (July 20, 2009)*
+*2.3.6 (pending)*
+
+* Destroy uses optimistic locking. If lock_version on the record you're destroying doesn't match lock_version in the database, a StaleObjectError is raised.  #1966 [Curtis Hawthorne]
+
+* To prefix the table names of all models in a module, define self.table_name_prefix on the module.  #4032 [Andrew White]
+
+* Association inverses for belongs_to, has_one, and has_many. Optimization to reduce database queries.  #3533 [Murray Steele]
+
+    # post.comments sets each comment's post without needing to :include
+    class Post < ActiveRecord::Base
+      has_many :comments, :inverse_of => :post
+    end
+
+* MySQL: add_ and change_column support positioning.  #3286 [Ben Marini]
+
+* Reset your Active Record counter caches with the reset_counter_cache class method.  #1211 [Mike Breen, Gabe da Silveira]
+
+
+*2.3.5 (November 25, 2009)*
+
+* Minor Bug Fixes and deprecation warnings
+
+* 1.9 Compatibility
+
+* Numerous fixes to the nested attributes functionality
+
+
+*2.3.4 (September 4, 2009)*
+
+* PostgreSQL: XML datatype support.  #1874 [Leonardo Borges]
+
+* SQLite: deprecate the 'dbfile' option in favor of 'database.'  #2363 [Paul Hinze, Jeremy Kemper]
+
+
+*2.3.3 (July 12, 2009)*
 
 * Added :primary_key option to belongs_to associations.  #765 [Szymon Nowak, Philip Hallstrom, Noel Rocha]
     # employees.company_name references companies.name

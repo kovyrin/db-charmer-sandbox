@@ -12,7 +12,8 @@ module ActionView
       # prepend the key with a period, nothing is converted.
       def translate(key, options = {})
         options[:raise] = true
-        I18n.translate(scope_key_by_partial(key), options)
+        translation = I18n.translate(scope_key_by_partial(key), options)
+        (translation.respond_to?(:join) ? translation.join : translation).html_safe
       rescue I18n::MissingTranslationData => e
         keys = I18n.send(:normalize_translation_keys, e.locale, e.key, e.options[:scope])
         content_tag('span', keys.join(', '), :class => 'translation_missing')
@@ -21,15 +22,16 @@ module ActionView
 
       # Delegates to I18n.localize with no additional functionality.
       def localize(*args)
-        I18n.localize *args
+        I18n.localize(*args)
       end
       alias :l :localize
 
 
       private
         def scope_key_by_partial(key)
-          if key.to_s.first == "."
-            template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s
+          strkey = key.respond_to?(:join) ? key.join : key.to_s
+          if strkey.first == "."
+            template.path_without_format_and_extension.gsub(%r{/_?}, ".") + strkey
           else
             key
           end
