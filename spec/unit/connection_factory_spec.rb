@@ -18,6 +18,11 @@ describe DbCharmer::ConnectionFactory do
       klass = DbCharmer::ConnectionFactory.generate_abstract_class('foo', false)
       klass.superclass.should be(ActiveRecord::Base)
     end
+
+    it "should work with weird connection names" do
+      klass = DbCharmer::ConnectionFactory.generate_abstract_class('foo.bar@baz#blah', false)
+      klass.superclass.should be(ActiveRecord::Base)
+    end
   end
 
   context "in generate_empty_abstract_ar_class method" do
