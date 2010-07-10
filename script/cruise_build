@@ -1,0 +1,4 @@
+#!/bin/bash
+
+script/bundler_setup && rake cruise:master
+exit $?
