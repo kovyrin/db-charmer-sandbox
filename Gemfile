@@ -8,4 +8,4 @@ gem 'mysql'
 
 gem 'rspec', '1.3.0'
 gem 'rspec-rails', '1.3.2'
-gem 'test-unit'
+gem 'test-unit', '1.2.3'
