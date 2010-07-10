@@ -1,0 +1,146 @@
+#!/bin/bash
+
+# This script installs required bundler version along with all gems
+# needed. You can specify environments to exclude as arguments:
+#
+#   script/bundler_setup development test cucumber
+#
+
+SCRIBD_RUBYGEMS_VERSION=1.3.6
+SCRIBD_BUNDLER_VERSION=0.9.26
+if [ "$SCRIBOX_PATH" != "" ]; then
+  if [ "$ALLOW_BUNDLER_SETUP_USAGE_WITH_SCRIBOX_ANYWAY" != "" ]; then
+    false
+  else
+    echo "Please don't use script/bundler_setup with Scribox." 1>&2
+    echo "Instead, use 'sbx gems:check'; it" 1>&2
+    echo "knows all about Scribox, and is much more likely to do" 1>&2
+    echo "the right thing." 1>&2
+    echo "" 1>&2
+    echo "If you REALLY need to use script/bundler_setup anyway," 1>&2
+    echo "you can set ALLOW_BUNDLER_SETUP_USAGE_WITH_SCRIBOX_ANYWAY=true," 1>&2
+    echo "but please make REALLY sure you know what you're doing" 1>&2
+    echo "before you do that."
+    
+    exit 2
+  fi
+  
+  echo " * Scribox detected, using it's gem home as a lock path"
+  BUNDLED_GEMS_PATH="$GEM_HOME"
+  BUNDLER_OPTIONS=""
+else
+  BUNDLED_GEMS_PATH="tmp/gems"
+  BUNDLER_OPTIONS="--disable-shared-gems"
+fi
+
+#===== Helper functions ========================================================
+
+# Function converts rubygem version to an integer number and stores it
+# into the RETURN_GEM_VERSION_VALUE variable.
+#     1.2.3   => 010203
+#     1.2.10  => 010210
+#     1.2.3.4 => 01020304
+#
+RETURN_GEM_VERSION_VALUE=
+function gem_version {
+  version=0
+  mul=1
+  for i in $(echo $1 | tr '.' ' ' | rev); do
+    x=`echo $i | rev`
+    (( version += $x * $mul, mul *= 100 ))
+  done
+  RETURN_GEM_VERSION_VALUE=$version
+}
+
+# Compares two rubygem versions. Returns:
+# * 0 if arg1 (actual) version is greater or equal to the arg2 (expected)
+# * 1 if arg1 (actual) version is less than the arg2 (expected)
+#
+function compare_gem_versions {
+  gem_version $1; v1=$RETURN_GEM_VERSION_VALUE
+  gem_version $2; v2=$RETURN_GEM_VERSION_VALUE
+  if [ $v1 -lt $v2 ]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+#===== Main logic ==============================================================
+
+# Special parameter -r forces deletion of all installed gems
+while true; do
+  case $1 in
+    -r|--remove)
+      shift
+      echo "Removing already installed gems"
+      # Remove everything except cache (for faster installation)
+      (cd $BUNDLED_GEMS_PATH && rm -rf gems/bin gems/doc gems/gems gems/specifications) > /dev/null 2>&1
+      ;;
+    --relock)
+      shift
+      echo "Relocking bundled package"
+      BUNDLER_OPTIONS="$BUNDLER_OPTIONS --relock"
+      ;;
+    *)
+      break
+  esac
+done
+
+# Update rubygems if outdated
+compare_gem_versions `gem -v` $SCRIBD_RUBYGEMS_VERSION
+if [ $? -ne 0 ]; then
+  echo "Updating RubyGems to >=$SCRIBD_RUBYGEMS_VERSION"
+  output=`gem update --system 2>&1`
+  retval=$?
+  if [ $retval -ne 0 ]; then
+    echo "$output"
+    exit $retval
+  fi
+
+  compare_gem_versions `gem -v` $SCRIBD_RUBYGEMS_VERSION
+  if [ $? -ne 0 ]; then
+    echo "Can't install RubyGems >=$SCRIBD_RUBYGEMS_VERSION!"
+    exit 1
+  fi
+fi
+
+# Install bundler if not installed
+if [ `gem list -i -v $SCRIBD_BUNDLER_VERSION bundler` == 'false' ]; then
+  echo "Installing Bundler $SCRIBD_BUNDLER_VERSION"
+  output=`gem install bundler -v $SCRIBD_BUNDLER_VERSION --no-ri --no-rdoc 2>&1`
+  retval=$?
+  if [ $retval -ne 0 ]; then
+    echo -e "$output"
+    exit $retval
+  fi
+fi
+
+# Construct --without argument for `bundle` command
+if [ "$#" -gt 0 ]; then
+  WITHOUT="--without $@"
+else
+  WITHOUT=""
+fi
+
+# Install gems
+echo "Updating bundled gems"
+if [ "$SCRIBOX_PATH" != "" ]; then
+  BUNDLE_PATH=`gem env gempath | sed 's/:.*//'`/bin
+else
+  BUNDLE_PATH=`gem env|grep 'EXECUTABLE DIRECTORY'|cut -d ':' -f 2|cut -c 2-`
+fi
+
+if [ ! -f "$BUNDLE_PATH/bundle" ]; then
+  BUNDLE_EXECUTABLE_PATH=`which bundle 2>&1`
+  retval=$?
+  if [ $retval -ne 0 ]; then
+    echo 'Bundler installed incorrectly, can''t find `bundle` executable'
+    echo -e "$output"
+    exit $retval
+  fi
+
+  BUNDLE_PATH=`dirname "$BUNDLE_EXECUTABLE_PATH"`
+fi
+$BUNDLE_PATH/bundle _${SCRIBD_BUNDLER_VERSION}_ install $BUNDLED_GEMS_PATH $BUNDLER_OPTIONS $WITHOUT
+exit $?
