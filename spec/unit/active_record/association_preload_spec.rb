@@ -11,7 +11,7 @@ describe "ActiveRecord in finder methods" do
 
   before do
     # Make Post model slave-less
-    Post.db_magic :connection => :default
+    Post.db_magic :connection => nil
   end
 
   it "should switch all belongs_to association connections when :include is used" do
