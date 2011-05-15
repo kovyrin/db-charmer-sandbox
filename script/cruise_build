@@ -1,4 +1,4 @@
 #!/bin/bash
 
-script/bundler_setup && rake cruise:master
+bundle install --deployment --quiet --without development test && bundle exec rake cruise:master
 exit $?
