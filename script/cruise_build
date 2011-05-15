@@ -1,4 +1,4 @@
 #!/bin/bash
 
-bundle install --deployment --quiet --without development test && bundle exec rake cruise:master
+bundle install --deployment --without development test && bundle exec rake cruise:master
 exit $?
