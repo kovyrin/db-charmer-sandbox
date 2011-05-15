@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe DbCharmer do
+  after do
+    DbCharmer.current_controller = nil
+  end
+
   it "should have connections_should_exist accessors" do
     DbCharmer.connections_should_exist.should_not be_nil
     DbCharmer.connections_should_exist = :foo
@@ -16,5 +20,53 @@ describe DbCharmer do
     DbCharmer.connections_should_exist?.should be_true
     DbCharmer.connections_should_exist = nil
     DbCharmer.connections_should_exist?.should be_false
+  end
+
+  it "should have current_controller accessors" do
+    DbCharmer.respond_to?(:current_controller).should be_true
+    DbCharmer.current_controller = :foo
+    DbCharmer.current_controller.should == :foo
+    DbCharmer.current_controller = nil
+  end
+
+  context "in force_slave_reads? method" do
+    it "should return false if no controller defined" do
+      DbCharmer.current_controller = nil
+      DbCharmer.force_slave_reads?.should be_false
+    end
+
+    it "should consult with the controller about forcing slave reads if possible" do
+      DbCharmer.current_controller = mock("controller")
+
+      DbCharmer.current_controller.should_receive(:force_slave_reads?).and_return(true)
+      DbCharmer.force_slave_reads?.should be_true
+
+      DbCharmer.current_controller.should_receive(:force_slave_reads?).and_return(false)
+      DbCharmer.force_slave_reads?.should be_false
+    end
+  end
+
+  context "in with_controller method" do
+    it "should fail if no block given" do
+      lambda { DbCharmer.with_controller(:foo) }.should raise_error(ArgumentError)
+    end
+
+    it "should switch controller while running the block" do
+      DbCharmer.current_controller = nil
+      DbCharmer.current_controller.should be_nil
+
+      DbCharmer.with_controller(:foo) do
+        DbCharmer.current_controller.should == :foo
+      end
+
+      DbCharmer.current_controller.should be_nil
+    end
+
+    it "should ensure current controller is reverted to nil in case of errors" do
+      lambda {
+        DbCharmer.with_controller(:foo) { raise "fuck" }
+      }.should raise_error
+      DbCharmer.current_controller.should be_nil
+    end
   end
 end
