@@ -9,6 +9,11 @@ end
 describe "ActiveRecord in finder methods" do
   fixtures :categories, :users, :posts, :categories_posts, :avatars
 
+  before do
+    # Make Post model slave-less
+    Post.db_magic :connection => :default
+  end
+
   it "should switch all belongs_to association connections when :include is used" do
     User.connection.should_not_receive(:select_all)
     Post.on_db(:slave01).all(:include => :user)
