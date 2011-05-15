@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe "DbCharmer::Sharding" do
   describe "in register_connection method" do
@@ -21,4 +21,3 @@ describe "DbCharmer::Sharding" do
     end
   end
 end
-

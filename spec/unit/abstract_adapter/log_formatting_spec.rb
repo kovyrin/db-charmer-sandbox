@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe 'AbstractAdapter' do
   it "should respond to connection_name accessor" do

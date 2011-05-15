@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe "ActiveRecord preload_associations method" do
   it "should be public" do
@@ -30,7 +30,6 @@ describe "ActiveRecord in finder methods" do
   end
 
   #-------------------------------------------------------------------------------------------
-
   it "should not switch assocations when called on a top-level connection" do
     User.should_not_receive(:on_db)
     Post.all(:include => :user)
