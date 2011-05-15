@@ -1,11 +1,10 @@
-source 'http://gemcutter.org'
+source 'http://rubygems.org'
 
-gem 'rails', '2.3.8'
-gem 'bundler', '0.9.26'
+gem 'rails', '2.3.11'
 
 gem 'rake'
 gem 'mysql'
 
-gem 'rspec', '1.3.0'
-gem 'rspec-rails', '1.3.2'
+gem 'rspec', '1.3.2'
+gem 'rspec-rails', '1.3.4'
 gem 'test-unit', '1.2.3'
