@@ -3,7 +3,7 @@ require 'spec_helper'
 class FooModel < ActiveRecord::Base; end
 
 describe DbCharmer, "for ActiveRecord models" do
-  describe "in db_charmer_connection_proxy methods" do
+  context "in db_charmer_connection_proxy methods" do
     before do
       FooModel.db_charmer_connection_proxy = nil
     end
@@ -15,7 +15,7 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
-  describe "in db_charmer_default_connection methods" do
+  context "in db_charmer_default_connection methods" do
     before do
       FooModel.db_charmer_default_connection = nil
     end
@@ -27,7 +27,7 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
-  describe "in db_charmer_opts methods" do
+  context "in db_charmer_opts methods" do
     before do
       FooModel.db_charmer_opts = nil
     end
@@ -39,7 +39,7 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
-  describe "in db_charmer_slaves methods" do
+  context "in db_charmer_slaves methods" do
     it "should return [] if no slaves set for a model" do
       FooModel.db_charmer_slaves = nil
       FooModel.db_charmer_slaves.should == []
@@ -63,7 +63,7 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
-  describe "in db_charmer_connection_levels methods" do
+  context "in db_charmer_connection_levels methods" do
     it "should return 0 by default" do
       FooModel.db_charmer_connection_level = nil
       FooModel.db_charmer_connection_level.should == 0
@@ -86,10 +86,28 @@ describe DbCharmer, "for ActiveRecord models" do
     end
   end
 
-  describe "in connection method" do
+  context "in connection method" do
     it "should return AR's original connection if no connection proxy is set" do
       FooModel.db_charmer_connection_proxy = nil
       FooModel.connection.should be_kind_of(ActiveRecord::ConnectionAdapters::AbstractAdapter)
+    end
+  end
+
+  context "in db_charmer_force_slave_reads? method" do
+    it "should use per-model settings when possible" do
+      FooModel.db_charmer_force_slave_reads = true
+      DbCharmer.should_not_receive(:force_slave_reads?)
+      FooModel.db_charmer_force_slave_reads?.should be_true
+    end
+
+    it "should use global settings when local setting is false" do
+      FooModel.db_charmer_force_slave_reads = false
+
+      DbCharmer.should_receive(:force_slave_reads?).and_return(true)
+      FooModel.db_charmer_force_slave_reads?.should be_true
+
+      DbCharmer.should_receive(:force_slave_reads?).and_return(false)
+      FooModel.db_charmer_force_slave_reads?.should be_false
     end
   end
 end
