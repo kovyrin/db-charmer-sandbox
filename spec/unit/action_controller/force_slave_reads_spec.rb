@@ -35,4 +35,9 @@ describe ActionController, "with force_slave_reads extension" do
     BlahController.force_slave_reads :only => :delete, :except => :delete
     BlahController.force_slave_reads_action?(:delete).should be_false
   end
+
+  it "should not force slave reads for non-listed actions when there are :except and :only lists present" do
+    BlahController.force_slave_reads :only => :index, :except => :delete
+    BlahController.force_slave_reads_action?(:show).should be_false
+  end
 end
