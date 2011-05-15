@@ -4,7 +4,7 @@ class Blah < ActiveRecord::Base; end
 
 describe "In ActiveRecord models" do
   describe "db_magic method" do
-    describe "with :connection parameter" do
+    context "with :connection parameter" do
       it "should change model's connection to specified one" do
         Blah.db_magic :connection => :logs
         Blah.connection.object_id.should == DbCharmer::ConnectionFactory.connect(:logs).object_id
@@ -25,7 +25,7 @@ describe "In ActiveRecord models" do
       end
     end
 
-    describe "with :slave or :slaves parameter" do
+    context "with :slave or :slaves parameter" do
       it "should merge :slave and :slaves values" do
         Blah.db_charmer_slaves = []
         Blah.db_charmer_slaves.should be_empty
@@ -39,6 +39,19 @@ describe "In ActiveRecord models" do
         Blah.db_magic :slaves => [ :slave01 ], :slave => :logs
         Blah.db_charmer_slaves.size.should == 2
       end
+
+      it "should make db_charmer_force_slave_reads = true by default" do
+        Blah.db_magic :slave => :slave01
+        Blah.db_charmer_force_slave_reads.should be_true
+      end
+
+      it "should pass force_slave_reads value to db_charmer_force_slave_reads" do
+        Blah.db_magic :slave => :slave01, :force_slave_reads => false
+        Blah.db_charmer_force_slave_reads.should be_false
+
+        Blah.db_magic :slave => :slave01, :force_slave_reads => true
+        Blah.db_charmer_force_slave_reads.should be_true
+      end
     end
 
     it "should set up a hook to propagate db_magic params to all the children models" do
@@ -50,7 +63,7 @@ describe "In ActiveRecord models" do
       ChildFoo.db_charmer_opts.should == ParentFoo.db_charmer_opts
     end
 
-    describe "with :sharded parameter" do
+    context "with :sharded parameter" do
       class ShardTestingFoo < ActiveRecord::Base
         db_magic :sharded => { :key => :id, :sharded_connection => :texts }
       end
@@ -58,7 +71,6 @@ describe "In ActiveRecord models" do
       it "should add shard_for method to the model" do
         ShardTestingFoo.should respond_to(:shard_for)
       end
-
     end
   end
 end
