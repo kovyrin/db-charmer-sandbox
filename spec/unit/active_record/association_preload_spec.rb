@@ -10,8 +10,8 @@ describe "ActiveRecord in finder methods" do
   fixtures :categories, :users, :posts, :categories_posts, :avatars
 
   before do
-    # Make Post model slave-less
     Post.db_magic :connection => nil
+    User.db_magic :connection => nil
   end
 
   it "should switch all belongs_to association connections when :include is used" do
@@ -36,12 +36,12 @@ describe "ActiveRecord in finder methods" do
 
   #-------------------------------------------------------------------------------------------
   it "should not switch assocations when called on a top-level connection" do
-    User.should_not_receive(:on_db)
+    User.connection.should_receive(:select_all).and_return([])
     Post.all(:include => :user)
   end
 
   it "should not switch connection when association model and main model are on different servers" do
-    LogRecord.should_not_receive(:on_db)
+    LogRecord.connection.should_receive(:select_all).and_return([])
     User.on_db(:slave01).all(:include => :log_records)
   end
 end
