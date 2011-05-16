@@ -30,7 +30,17 @@ describe DbCharmer do
   end
 
   context "in force_slave_reads? method" do
-    it "should return false if no controller defined" do
+    it "should return true if force_slave_reads=true" do
+      DbCharmer.force_slave_reads?.should be_false
+
+      DbCharmer.force_slave_reads do
+        DbCharmer.force_slave_reads?.should be_true
+      end
+
+      DbCharmer.force_slave_reads?.should be_false
+    end
+
+    it "should return false if no controller defined and global force_slave_reads=false" do
       DbCharmer.current_controller = nil
       DbCharmer.force_slave_reads?.should be_false
     end
