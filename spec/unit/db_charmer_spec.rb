@@ -5,6 +5,10 @@ describe DbCharmer do
     DbCharmer.current_controller = nil
   end
 
+  it "should define version constants" do
+    DbCharmer::Version::STRING.should match(/^\d+\.\d+\.\d+/)
+  end
+
   it "should have connections_should_exist accessors" do
     DbCharmer.connections_should_exist.should_not be_nil
     DbCharmer.connections_should_exist = :foo
