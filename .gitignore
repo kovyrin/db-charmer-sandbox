@@ -5,3 +5,4 @@
 /config/database.yml
 /.bundle
 /tmp
+.DS_Store
