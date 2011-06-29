@@ -3,6 +3,7 @@ require 'spec_helper'
 describe DbCharmer do
   after do
     DbCharmer.current_controller = nil
+    DbCharmer.connections_should_exist = false
   end
 
   it "should define version constants" do
