@@ -17,7 +17,7 @@ cp config/database.yml.example config/database.yml
 rm -rf vendor/plugins/db-charmer
 bundle exec ./script/plugin install git://github.com/kovyrin/db-charmer.git
 
-# Create databases
+# Create databases and sharding tables
 mysql -u root < db/create_databases.sql
 mysql -u root db_charmer_sandbox_test < db/sharding.sql
 
