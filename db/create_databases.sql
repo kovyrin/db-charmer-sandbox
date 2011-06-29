@@ -10,4 +10,4 @@ create database db_charmer_events_test_shard01;
 drop database if exists db_charmer_events_test_shard02;
 create database db_charmer_events_test_shard02;
 
-grant all privieges on db_charmer_sandbox_test.* to 'db_charmer_ro'@'localhost';
+grant all privileges on db_charmer_sandbox_test.* to 'db_charmer_ro'@'localhost';
