@@ -17,6 +17,10 @@ cp config/database.yml.example config/database.yml
 rm -rf vendor/plugins/db-charmer
 bundle exec ./script/plugin install git://github.com/kovyrin/db-charmer.git
 
+# Create databases
+mysql < db/create_databases.sql
+mysql < db/sharding.sql
+
 # Run migrations
 bundle exec rake db:migrate
 
