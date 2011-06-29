@@ -5,3 +5,6 @@
 /config/database.yml
 /.bundle
 /tmp
+.DS_Store
+vendor/bundle
+vendor/plugins

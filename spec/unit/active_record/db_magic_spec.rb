@@ -5,6 +5,10 @@ class Blah < ActiveRecord::Base; end
 describe "In ActiveRecord models" do
   describe "db_magic method" do
     context "with :connection parameter" do
+      after do
+        DbCharmer.connections_should_exist = false
+      end
+
       it "should change model's connection to specified one" do
         Blah.db_magic :connection => :logs
         Blah.connection.object_id.should == DbCharmer::ConnectionFactory.connect(:logs).object_id
@@ -18,7 +22,7 @@ describe "In ActiveRecord models" do
         Blah.db_magic :connection => :logs, :should_exist => false
       end
 
-      it "should use global DbMagic's connections_should_exist attribute if no :should_exist passed" do
+      it "should use global DbCharmer's connections_should_exist attribute if no :should_exist passed" do
         DbCharmer.connections_should_exist = true
         DbCharmer::ConnectionFactory.should_receive(:connect).with(:logs, true)
         Blah.db_magic :connection => :logs
