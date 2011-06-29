@@ -1,4 +1,24 @@
 #!/bin/bash
 
-bundle install --deployment --without development test && bundle exec rake cruise:master
-exit $?
+# Making the script more robust
+set -e # Exit on errors
+set -u # Exit on uninitialized variables
+
+# Test environment
+export RAILS_ENV=test
+
+# Install gems
+bundle install --deployment --without development test
+
+# Configure database access
+cp config/database.yml.example config/database.yml
+
+# Vendor the plugin
+rm -rf vendor/plugins/db-charmer
+bundle exec ./script/plugin install git://github.com/kovyrin/db-charmer.git
+
+# Run migrations
+bundle exec rake db:migrate
+
+# Run the build and return its exit code
+exec bundle exec rake spec
