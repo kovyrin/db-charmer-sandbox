@@ -19,7 +19,7 @@ bundle exec ./script/plugin install git://github.com/kovyrin/db-charmer.git
 
 # Create databases
 mysql -u root < db/create_databases.sql
-mysql -u root < db/sharding.sql
+mysql -u root db_charmer_sandbox_test < db/sharding.sql
 
 # Run migrations
 bundle exec rake db:migrate
