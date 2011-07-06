@@ -5,7 +5,7 @@ drop database if exists db_charmer_logs22_test;
 create database db_charmer_logs22_test;
 
 drop database if exists db_charmer_events22_test_shard01;
-create database db_charmer_events_test22_shard01;
+create database db_charmer_events22_test_shard01;
 
 drop database if exists db_charmer_events22_test_shard02;
 create database db_charmer_events22_test_shard02;
