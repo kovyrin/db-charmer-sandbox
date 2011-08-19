@@ -1,3 +1,10 @@
+PATH
+  remote: vendor/db-charmer
+  specs:
+    db-charmer (1.7.0.pre6)
+      activerecord (~> 3.0)
+      activesupport (~> 3.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -89,6 +96,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  db-charmer!
   hoe (= 2.8.0)
   mysql
   rails (= 3.0.10)

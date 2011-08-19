@@ -51,6 +51,7 @@ describe DbCharmer do
     end
 
     it "should consult with the controller about forcing slave reads if possible" do
+      pending "rails3"
       DbCharmer.current_controller = mock("controller")
 
       DbCharmer.current_controller.should_receive(:force_slave_reads?).and_return(true)
@@ -63,10 +64,12 @@ describe DbCharmer do
 
   context "in with_controller method" do
     it "should fail if no block given" do
+      pending "rails3"
       lambda { DbCharmer.with_controller(:foo) }.should raise_error(ArgumentError)
     end
 
     it "should switch controller while running the block" do
+      pending "rails3"
       DbCharmer.current_controller = nil
       DbCharmer.current_controller.should be_nil
 
