@@ -1,13 +1,13 @@
 source 'http://rubygems.org'
 
-gem 'rails', '2.3.11'
+gem 'rails', '3.0.10'
 
 gem 'rake'
 gem 'mysql'
 
-gem 'rspec', '1.3.2'
-gem 'rspec-rails', '1.3.4'
-gem 'test-unit', '1.2.3'
+gem 'rspec', '2.6.0'
+gem 'rspec-rails', '2.6.1'
+gem 'test-unit', '2.3.2'
 
 # Test-unit requires this gem.
 # We stick to this version because newer ones require ne rubygems which we do not have on our CI server yet.
