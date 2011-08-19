@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe DbCharmer::ConnectionProxy do
   before(:each) do
