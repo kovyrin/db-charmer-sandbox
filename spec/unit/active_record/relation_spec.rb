@@ -32,5 +32,10 @@ if DbCharmer.rails3?
 
       rel.first
     end
+
+    it "should return correct connection" do
+      rel = User.on_db(:user_master).where("1=1")
+      rel.connection.object_id.should == rel.db_charmer_connection.object_id
+    end
   end
 end
