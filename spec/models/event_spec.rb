@@ -56,7 +56,7 @@ describe Event, "sharded model" do
     Event.shard_for(100).count.should == 1
   end
 
-  it "should fail to do any database operations w/o a shard specification" do
+  it "should fail to perform any database operations w/o a shard specification" do
     lambda { Event.first }.should raise_error(ActiveRecord::ConnectionNotEstablished)
     lambda { Event.create }.should raise_error(ActiveRecord::ConnectionNotEstablished)
     lambda { Event.delete_all }.should raise_error(ActiveRecord::ConnectionNotEstablished)

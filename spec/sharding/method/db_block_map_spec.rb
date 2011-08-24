@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe DbCharmer::Sharding::Method::DbBlockMap do
   fixtures :event_shards_info, :event_shards_map
