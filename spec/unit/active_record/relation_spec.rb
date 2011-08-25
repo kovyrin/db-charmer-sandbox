@@ -24,13 +24,40 @@ if DbCharmer.rails3?
       rel.where("2=2").db_charmer_connection.object_id.should == rel.db_charmer_connection.object_id
     end
 
-    it "should execute queries on the default connection" do
+    it "should execute select queries on the default connection" do
       rel = User.on_db(:user_master).where("1=1")
 
       User.on_db(:user_master).connection.should_receive(:select_all).and_return([User.first])
       User.connection.should_not_receive(:select_all)
 
       rel.first
+    end
+
+    it "should execute delete queries on the default connection" do
+      rel = User.on_db(:user_master).where("1=1")
+
+      User.on_db(:user_master).connection.should_receive(:delete)
+      User.connection.should_not_receive(:delete)
+
+      rel.delete_all
+    end
+
+    it "should execute update_all queries on the default connection" do
+      rel = User.on_db(:user_master).where("1=1")
+
+      User.on_db(:user_master).connection.should_receive(:update)
+      User.connection.should_not_receive(:update)
+
+      rel.update_all("login = login + 'new'")
+    end
+
+    it "should execute update queries on the default connection" do
+      rel = User.on_db(:user_master).where("1=1")
+
+      User.on_db(:user_master).connection.should_receive(:update)
+      User.connection.should_not_receive(:update)
+
+      rel.update(User.first.id, :login => "foobar")
     end
 
     it "should return correct connection" do
