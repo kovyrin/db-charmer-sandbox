@@ -17,5 +17,5 @@ gem 'hoe', '2.8.0'
 if File.exists?("vendor/db-charmer")
   gem 'db-charmer', :path => 'vendor/db-charmer', :require => 'db_charmer'
 else
-  gem 'db-charmer', :git => 'git://github.com/kovyrin/db-charmer.git', :branch => 'rails3', :require => 'db_charmer'
+  gem 'db-charmer', :git => 'git://github.com/kovyrin/db-charmer.git', :require => 'db_charmer'
 end
