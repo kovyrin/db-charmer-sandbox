@@ -7,9 +7,6 @@ set -u # Exit on uninitialized variables
 # Test environment
 export RAILS_ENV=test
 
-# Install gems
-bundle install --without development test
-
 # Configure database access
 cp -f config/database.yml.example config/database.yml
 
