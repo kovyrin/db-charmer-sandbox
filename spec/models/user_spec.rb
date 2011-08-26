@@ -6,6 +6,7 @@ describe User do
       :login => "value for login",
       :password => "value for password"
     }
+    User.switch_connection_to(nil)
   end
 
   it "should create a new instance given valid attributes" do
