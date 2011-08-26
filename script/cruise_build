@@ -11,11 +11,11 @@ export RAILS_ENV=test
 bundle install --deployment --without development test
 
 # Configure database access
-cp config/database.yml.example config/database.yml
+cp -f config/database.yml.example config/database.yml
 
 # Vendor the plugin
-rm -rf vendor/plugins/db-charmer
-bundle exec ./script/plugin install git://github.com/kovyrin/db-charmer.git
+rm -rf vendor/plugins/db-charmer vendor/db-charmer
+git clone git://github.com/kovyrin/db-charmer.git vendor/db-charmer
 
 # Create databases and sharding tables
 mysql -u root < db/create_databases.sql
