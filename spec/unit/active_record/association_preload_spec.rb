@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "ActiveRecord preload_associations method" do
   it "should be public" do
-    ActiveRecord::Base.public_methods.member?('preload_associations').should be(true)
+    ActiveRecord::Base.public_methods.collect(&:to_s).member?('preload_associations').should be(true)
   end
 end
 
