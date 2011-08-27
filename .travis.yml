@@ -7,3 +7,10 @@ notifications:
     - alexey@kovyrin.net
 
 script: script/cruise_build
+
+# whitelist branches
+branches:
+  only:
+    - master
+    - rails22
+    - rails23
