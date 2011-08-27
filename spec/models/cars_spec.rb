@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Ford, "STI model" do
   before(:each) do
@@ -10,7 +10,7 @@ describe Ford, "STI model" do
   it "should create a new instance given valid attributes" do
     Ford.create!(@valid_attributes)
   end
-  
+
   it "should properly handle slave find calls" do
     Ford.first.should be_valid
   end

@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe RangeShardedModel do
   describe "class method shard_for" do

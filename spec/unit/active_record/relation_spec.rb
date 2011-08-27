@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 if DbCharmer.rails3?
   describe "ActiveRecord::Relation for a model with db_magic" do

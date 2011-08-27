@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe DbCharmer::ConnectionFactory do
   context "in generate_abstract_class method" do

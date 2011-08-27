@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 if DbCharmer.rails2?
   describe 'AbstractAdapter' do
