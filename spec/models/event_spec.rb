@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Event, "sharded model" do
   fixtures :event_shards_info, :event_shards_map
