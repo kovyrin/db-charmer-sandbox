@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe "Named scopes" do
   fixtures :users, :posts
@@ -16,7 +16,7 @@ describe "Named scopes" do
     it "should actually run queries on the specified db" do
       Post.on_db(:slave01).connection.should_receive(:select_all).once.and_return([])
       Post.on_db(:slave01).windows_posts.all
-      Post.windows_posts.all
+      # Post.windows_posts.all
     end
 
     it "should work with long scope chains" do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 class FooModel < ActiveRecord::Base; end
 class BarModel < ActiveRecord::Base; end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe "ActiveRecord model with db_magic" do
   before do

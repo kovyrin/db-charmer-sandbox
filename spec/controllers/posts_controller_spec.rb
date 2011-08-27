@@ -1,5 +1,4 @@
-require 'spec_helper'
-require 'pp'
+require 'spec/spec_helper'
 
 describe PostsController do
   fixtures :posts
