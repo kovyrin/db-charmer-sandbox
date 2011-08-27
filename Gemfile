@@ -5,8 +5,8 @@ gem 'rails', '3.0.10'
 gem 'rake'
 gem 'mysql'
 
-gem 'rspec', '2.6.0'
-gem 'rspec-rails', '2.6.1'
+gem 'rspec'
+gem 'rspec-rails'
 
 # Load DbCharmer as a gem
 if File.exists?("vendor/db-charmer")
