@@ -1,6 +1,7 @@
 class CreateCategoriesPosts < ActiveRecord::Migration
   def self.up
-    create_table :categories_posts do |t|
+    pk_in_join_table = !DbCharmer.rails3?
+    create_table :categories_posts, :id => pk_in_join_table do |t|
       t.integer :post_id
       t.integer :category_id
     end

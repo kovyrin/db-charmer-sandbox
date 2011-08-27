@@ -6,5 +6,5 @@
 /.bundle
 /tmp
 .DS_Store
-vendor/bundle
-vendor/plugins
+/vendor
+/Gemfile.lock

@@ -7,15 +7,8 @@ set -u # Exit on uninitialized variables
 # Test environment
 export RAILS_ENV=test
 
-# Install gems
-bundle install --deployment --without development test
-
 # Configure database access
-cp config/database.yml.example config/database.yml
-
-# Vendor the plugin
-rm -rf vendor/plugins/db-charmer
-bundle exec ./script/plugin install git://github.com/kovyrin/db-charmer.git
+cp -f config/database.yml.example config/database.yml
 
 # Create databases and sharding tables
 mysql -u root < db/create_databases.sql
