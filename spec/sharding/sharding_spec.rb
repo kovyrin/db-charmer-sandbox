@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe "DbCharmer::Sharding" do
   describe "in register_connection method" do
