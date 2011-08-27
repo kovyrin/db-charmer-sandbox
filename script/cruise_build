@@ -18,4 +18,4 @@ mysql -u root db_charmer_sandbox_test < db/sharding.sql
 bundle exec rake db:migrate
 
 # Run the build and return its exit code
-exec bundle exec spec -cfs spec
+exec bundle exec rake spec
