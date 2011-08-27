@@ -8,3 +8,4 @@
 .DS_Store
 /vendor
 /Gemfile.lock
+/doc
