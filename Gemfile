@@ -7,11 +7,11 @@ gem 'mysql'
 
 gem 'rspec', '1.3.2'
 gem 'rspec-rails', '1.3.4'
-gem 'test-unit', '1.2.3'
-
-# Test-unit requires this gem.
-# We stick to this version because newer ones require ne rubygems which we do not have on our CI server yet.
-gem 'hoe', '2.8.0'
+gem 'test-unit', '2.3.2'
 
 # Load DbCharmer as a gem
-gem 'db-charmer', :path => 'vendor/db-charmer', :require => 'db_charmer'
+if File.exists?("vendor/db-charmer")
+  gem 'db-charmer', :path => 'vendor/db-charmer', :require => 'db_charmer'
+else
+  gem 'db-charmer', :git => 'git://github.com/kovyrin/db-charmer.git', :require => 'db_charmer'
+end
