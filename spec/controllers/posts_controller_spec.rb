@@ -44,7 +44,7 @@ describe PostsController do
         Post.connection.should_not_receive(:select_value) # no counts
         Post.connection.should_not_receive(:select_all) # no finds
         Post.on_slave.connection.should_receive(:select_value).and_return(1)
-        Post.on_slave.connection.should_receive(:select_all).and_return([post])
+        Post.on_slave.connection.should_receive(:select_all).and_return([post.attributes])
         get 'show', :id => post.id
       end
     end
