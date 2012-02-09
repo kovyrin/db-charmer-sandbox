@@ -57,6 +57,9 @@ describe Event, "sharded model" do
   end
 
   it "should fail to perform any database operations w/o a shard specification" do
+    Event.stub(:column_defaults).and_return({})
+    Event.stub(:columns_hash).and_return({})
+
     lambda { Event.first }.should raise_error(ActiveRecord::ConnectionNotEstablished)
     lambda { Event.create }.should raise_error(ActiveRecord::ConnectionNotEstablished)
     lambda { Event.delete_all }.should raise_error(ActiveRecord::ConnectionNotEstablished)

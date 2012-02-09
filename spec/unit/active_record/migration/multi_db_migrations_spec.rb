@@ -182,7 +182,7 @@ describe "Multi-db migractions" do
     end
   end
 
-  describe 'with db_magic calls in instance methods', :rails => '>= 3.2' do
+  describe 'with db_magic calls in instance methods', :rails => '>= 3.1' do
     it "should send all up requests to specified connection" do
       ActiveRecord::Base.connection.should_receive(:execute).with("UPDATE log_records SET level = 'hoho'")
       connection_with_name(:logs).should_receive(:execute).with("UPDATE log_records SET level = 'hoho'")
@@ -196,7 +196,7 @@ describe "Multi-db migractions" do
     end
   end
 
-  describe 'with db_magic calls in recorder', :rails => '>= 3.2' do
+  describe 'with db_magic calls in recorder', :rails => '>= 3.1' do
     it "should send all up requests to specified connection" do
       ActiveRecord::Base.connection.should_not_receive(:execute)
       connection_with_name(:logs).should_receive(:execute).with(/CREATE TABLE/)

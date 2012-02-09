@@ -16,6 +16,7 @@ describe "ActiveRecord slave-enabled models" do
         end
 
         it "should not change connection if called in an on_db block" do
+          stub_columns_for_rails31 User.on_db(:logs).connection
           User.on_db(:logs).connection.should_receive(:select_all).and_return([])
           User.on_slave.connection.should_not_receive(:select_all)
           User.on_db(:logs).send(meth)

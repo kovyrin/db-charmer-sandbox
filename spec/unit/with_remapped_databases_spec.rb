@@ -83,6 +83,7 @@ describe "DbCharmer#with_remapped_databases" do
   it "should successfully run selects on the right database" do
     DbCharmer.with_remapped_databases(:logs => :slave01) do
       logs_connection.should_not_receive(:select_all)
+      slave_connection.abstract_connection_class.retrieve_connection.stub(:columns).and_return([])
       slave_connection.should_receive(:select_all).and_return([])
       LogRecord.all.should == [ ]
     end
