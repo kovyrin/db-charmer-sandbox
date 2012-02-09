@@ -5,7 +5,7 @@ if DbCharmer.rails3?
     before do
       class RelTestModel < ActiveRecord::Base
         db_magic :connection => nil
-        set_table_name :users
+        self.table_name = :users
       end
     end
 
