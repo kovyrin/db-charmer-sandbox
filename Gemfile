@@ -12,8 +12,15 @@ if File.exists?("vendor/db-charmer")
 else
   gem 'db-charmer', :git => 'git://github.com/kovyrin/db-charmer.git', :require => 'db_charmer'
 end
+
+# Detect Rails version we need to use
 rails_version_file = File.expand_path("../.rails-version", __FILE__)
-case version = ENV['RAILS_VERSION'] || File.exists?(rails_version_file) && File.read(rails_version_file).chomp || '3-2-stable'
+version = File.exists?(rails_version_file) && File.read(rails_version_file).chomp
+version ||= ENV['RAILS_VERSION']
+version ||= '3-2-stable'
+
+# Require gems for selected rails version
+case version
 when /master/
   gem "rails", :git => "git://github.com/rails/rails.git"
   gem "arel", :git => "git://github.com/rails/arel.git"
