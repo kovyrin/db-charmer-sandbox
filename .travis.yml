@@ -13,5 +13,4 @@ script: script/cruise_build
 branches:
   only:
     - master
-    - rails22
-    - rails23
+    - rails2x
