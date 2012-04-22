@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '2.3.11'
-
+gem "rails", :git => "git://github.com/rails/rails.git", :branch => "2-3-stable"
 gem 'rake'
 gem 'mysql'
 

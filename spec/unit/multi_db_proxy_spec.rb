@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "ActiveRecord model with db_magic" do
   before do
     class Blah < ActiveRecord::Base
-      set_table_name :posts
+      self.table_name = :posts
       db_magic :connection => nil
     end
   end

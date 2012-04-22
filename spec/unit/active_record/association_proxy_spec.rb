@@ -24,7 +24,8 @@ describe "DbCharmer::AssociationProxy extending AR::Associations" do
       Post.connection.should_not_receive(:select_all)
       User.connection.should_not_receive(:select_all)
 
-      Post.on_db(:slave01).connection.should_receive(:select_all).and_return(@posts)
+      stub_columns_for_rails31 Post.on_db(:logs).connection
+      Post.on_db(:slave01).connection.should_receive(:select_all).and_return(@posts.map { |p| p.attributes })
       assert_equal @posts, @user.posts.on_db(:slave01)
     end
 
@@ -32,8 +33,9 @@ describe "DbCharmer::AssociationProxy extending AR::Associations" do
       Post.connection.should_not_receive(:select_all)
       User.connection.should_not_receive(:select_all)
 
-      Post.on_db(:slave01).connection.should_receive(:select_all).and_return(@posts)
-      assert_equal @posts, @user.on_db(:slave01).posts
+      stub_columns_for_rails31 Post.on_db(:logs).connection
+      Post.on_db(:slave01).connection.should_receive(:select_all).and_return(@posts.map { |p| p.attributes })
+      @user.on_db(:slave01).posts.should == @posts
     end
 
     it "should actually proxy calls to the rails association proxy" do
