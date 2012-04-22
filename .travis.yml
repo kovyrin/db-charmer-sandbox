@@ -4,6 +4,11 @@ rvm:
   - ree
   - 1.9.3
 
+env:
+  - RAILS_VERSION=3-0-stable
+  - RAILS_VERSION=3-1-stable
+  - RAILS_VERSION=3-2-stable
+
 notifications:
   recipients:
     - alexey@kovyrin.net

@@ -4,6 +4,12 @@
 set -e # Exit on errors
 set -u # Exit on uninitialized variables
 
+# Print version info
+echo "-----------------------------------------------------------------------------------------------------------------"
+echo " * Running specs for Rails version $RAILS_VERSION..."
+echo " * Ruby version: `ruby --version`"
+echo "-----------------------------------------------------------------------------------------------------------------"
+
 # Test environment
 export RAILS_ENV=test
 
@@ -13,6 +19,10 @@ cp -f config/database.yml.example config/database.yml
 # Create databases and sharding tables
 mysql -u root < db/create_databases.sql
 mysql -u root db_charmer_sandbox_test < db/sharding.sql
+
+# Install gems
+rm -f Gemfile.lock
+bundle install
 
 # Run migrations
 bundle exec rake db:migrate
