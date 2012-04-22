@@ -194,7 +194,7 @@ describe "Multi-db migractions" do
       connection_with_name(:logs).should_receive(:execute).with("UPDATE log_records SET level = 'blah'")
       SpecMultiDbMigration5.migrate(:down)
     end
-  end
+  end unless DbCharmer.rails2?
 
   describe 'with db_magic calls in recorder', :rails => '>= 3.1' do
     it "should send all up requests to specified connection" do
@@ -208,5 +208,5 @@ describe "Multi-db migractions" do
       connection_with_name(:logs).should_receive(:execute).with(/DROP TABLE/)
       SpecMultiDbMigration6.migrate(:down)
     end
-  end
+  end unless DbCharmer.rails2?
 end

@@ -1,9 +1,11 @@
 source 'http://rubygems.org'
 
-gem "rails", :git => "git://github.com/rails/rails.git", :branch => "2-3-stable"
+gem 'rails', '2.3.14'
+
 gem 'rake'
 gem 'mysql'
 
+# Rspec gems
 gem 'rspec', '1.3.2'
 gem 'rspec-rails', '1.3.4'
 
