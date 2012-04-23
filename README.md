@@ -11,7 +11,7 @@ At the moment we have the following build matrix:
 * Rails versions:
   - 2.2.3  ![Build Status: rails 2.2](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=rails22)
   - 2.3.14 ![Build Status: rails 2.3](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=rails22)
-  - 3.0.10 ![Build Status: rails 3.0](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=master)
+  - 3.x ![Build Status: rails 3.x](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=master)
 * Ruby versions:
   - 1.8.7
   - Ruby Enterprise Edition (1.8.7)
