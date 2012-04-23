@@ -28,4 +28,4 @@ bundle install
 bundle exec rake --trace db:migrate
 
 # Run the build and return its exit code
-exec bundle exec rspec -cfs spec/unit/connection_proxy_spec.rb spec/unit/active_record/association_preload_spec.rb
+exec bundle exec rspec -cfs spec/unit
