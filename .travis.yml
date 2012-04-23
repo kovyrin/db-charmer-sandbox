@@ -1,6 +1,11 @@
+language: ruby
 rvm:
   - 1.8.7
   - ree
+
+env:
+  - RAILS_VERSION=2-2-stable
+  - RAILS_VERSION=2-3-stable
 
 notifications:
   recipients:
@@ -12,5 +17,4 @@ script: script/cruise_build
 branches:
   only:
     - master
-    - rails22
-    - rails23
+    - rails2x
