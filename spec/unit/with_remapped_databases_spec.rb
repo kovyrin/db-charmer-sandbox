@@ -96,6 +96,10 @@ describe "DbCharmer#with_remapped_databases" do
           undef_method(:connection_with_magic)
           alias_method(:connection, :connection_without_magic)
           undef_method(:connection_without_magic)
+
+          undef_method(:connection_pool_with_magic)
+          alias_method(:connection_pool, :connection_pool_without_magic)
+          undef_method(:connection_pool_without_magic)
         end
       END
     end
