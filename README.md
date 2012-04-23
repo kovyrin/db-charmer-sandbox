@@ -9,8 +9,7 @@ CI is running on TravisCI.org: http://travis-ci.org/#!/kovyrin/db-charmer-sandbo
 At the moment we have the following build matrix:
 
 * Rails versions:
-  - 2.2.3  ![Build Status: rails 2.2](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=rails22)
-  - 2.3.14 ![Build Status: rails 2.3](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=rails22)
+  - 2.x ![Build Status: rails 2.x](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=rails2x)
   - 3.x ![Build Status: rails 3.x](https://secure.travis-ci.org/kovyrin/db-charmer-sandbox.png?branch=master)
 * Ruby versions:
   - 1.8.7
