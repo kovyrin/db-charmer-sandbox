@@ -25,7 +25,7 @@ rm -f Gemfile.lock
 bundle install
 
 # Run migrations
-bundle exec rake db:migrate
+bundle exec rake --trace db:migrate
 
 # Run the build and return its exit code
-exec bundle exec rake spec
+exec bundle exec rake --trace spec
